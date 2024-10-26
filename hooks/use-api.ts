@@ -9,9 +9,9 @@ interface ApiHook<TResponse, TRequest = TResponse> {
     error: ErrorResponse | null;
     isLoading: boolean;
     get: (params?: Record<string, string>) => Promise<ApiResponse<TResponse>>;
-    post: (body: TRequest, params?: Record<string, string>) => Promise<ApiResponse<TResponse>>;
-    put: (body: TRequest, params?: Record<string, string>) => Promise<ApiResponse<TResponse>>;
-    patch: (body: TRequest, params?: Record<string, string>) => Promise<ApiResponse<TResponse>>;
+    post: (body: TRequest | FormData, params?: Record<string, string>) => Promise<ApiResponse<TResponse>>;
+    put: (body: TRequest | FormData, params?: Record<string, string>) => Promise<ApiResponse<TResponse>>;
+    patch: (body: TRequest | FormData, params?: Record<string, string>) => Promise<ApiResponse<TResponse>>;
     del: (params?: Record<string, string>) => Promise<ApiResponse<TResponse>>;
 }
 
@@ -21,7 +21,7 @@ export function useApi<TResponse, TRequest extends Record<string, any> = Record<
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const execute = useCallback(
-        async (method: ApiMethod, body?: TRequest, params?: Record<string, string>) => {
+        async (method: ApiMethod, body?: TRequest | FormData, params?: Record<string, string>) => {
             setIsLoading(true);
             setError(null);
 
@@ -50,17 +50,17 @@ export function useApi<TResponse, TRequest extends Record<string, any> = Record<
     );
 
     const post = useCallback(
-        (body: TRequest, params?: Record<string, string>) => execute('POST', body, params),
+        (body: TRequest | FormData, params?: Record<string, string>) => execute('POST', body, params),
         [execute]
     );
 
     const put = useCallback(
-        (body: TRequest, params?: Record<string, string>) => execute('PUT', body, params),
+        (body: TRequest | FormData, params?: Record<string, string>) => execute('PUT', body, params),
         [execute]
     );
 
     const patch = useCallback(
-        (body: TRequest, params?: Record<string, string>) => execute('PATCH', body, params),
+        (body: TRequest | FormData, params?: Record<string, string>) => execute('PATCH', body, params),
         [execute]
     );
 

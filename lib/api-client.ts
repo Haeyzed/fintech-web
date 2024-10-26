@@ -8,7 +8,7 @@ type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 interface RequestOptions<T> extends Omit<RequestInit, 'method' | 'body'> {
     method?: HttpMethod;
     params?: Record<string, string>;
-    body?: T;
+    body?: T | FormData;
 }
 
 export interface ApiResponse<T> {
@@ -29,26 +29,27 @@ async function client<TResponse, TRequest extends Record<string, any> = Record<s
     { params, ...customConfig }: RequestOptions<TRequest> = {}
 ): Promise<ApiResponse<TResponse>> {
     const session = await getSession();
-    const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
-    };
+    const headers: HeadersInit = new Headers();
 
     if (session?.user?.token) {
-        headers['Authorization'] = `Bearer ${session.user.token}`;
+        headers.set('Authorization', `Bearer ${session.user.token}`);
     }
 
     const config: RequestInit = {
         method: customConfig.method || 'GET',
-        ...customConfig,
-        headers: {
-            ...headers,
-            ...customConfig.headers,
-        },
+        headers,
     };
 
-    if (customConfig.body) {
+    if (customConfig.body instanceof FormData) {
+        config.body = customConfig.body;
+    } else if (customConfig.body) {
+        headers.set('Content-Type', 'application/json');
         config.body = JSON.stringify(customConfig.body);
     }
+
+    Object.entries(customConfig.headers || {}).forEach(([key, value]) => {
+        headers.set(key, value);
+    });
 
     const url = new URL(`${API_BASE_URL}${endpoint}`);
     if (params) {
