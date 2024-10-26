@@ -23,6 +23,7 @@ import {toast} from "sonner"
 import {Label} from "@/components/ui/label"
 import {DateRangePicker} from "@/components/date-range-picker"
 import {ScrollArea, ScrollBar} from "@/components/ui/scroll-area"
+import {ErrorResponse} from "@/types/auth";
 
 export interface Column<T> {
     key: keyof T
@@ -59,23 +60,23 @@ interface AdvancedTableProps<T> {
     enableSort?: boolean
 }
 
-export function AdvancedTable<T extends Record<string, any>>({
-                                                                 columns,
-                                                                 endpoint,
-                                                                 itemActions,
-                                                                 fallbackSortColumn,
-                                                                 fallbackSortDirection = 'asc',
-                                                                 onSearchChange,
-                                                                 onSelectionChange,
-                                                                 onTrashSwitchChange,
-                                                                 enableToast = true,
-                                                                 enableSearch = true,
-                                                                 enableTrashSwitching = true,
-                                                                 enableColumnVisibility = true,
-                                                                 enableDateRange = true,
-                                                                 enablePerPage = true,
-                                                                 enableSort = true,
-                                                             }: AdvancedTableProps<T>) {
+export function AdvancedTable<T extends Record<string, unknown>>({
+                                                                     columns,
+                                                                     endpoint,
+                                                                     itemActions,
+                                                                     fallbackSortColumn,
+                                                                     fallbackSortDirection = 'asc',
+                                                                     onSearchChange,
+                                                                     onSelectionChange,
+                                                                     onTrashSwitchChange,
+                                                                     enableToast = true,
+                                                                     enableSearch = true,
+                                                                     enableTrashSwitching = true,
+                                                                     enableColumnVisibility = true,
+                                                                     enableDateRange = true,
+                                                                     enablePerPage = true,
+                                                                     enableSort = true,
+                                                                 }: AdvancedTableProps<T>) {
     const [tableState, setTableState] = useState<TableState<T>>({
         search: '',
         page: 1,
@@ -83,7 +84,7 @@ export function AdvancedTable<T extends Record<string, any>>({
         sortColumn: fallbackSortColumn || null,
         sortDirection: fallbackSortDirection,
         includeTrashed: false,
-        dateRange: { startDate: '', endDate: '' }
+        dateRange: {startDate: '', endDate: ''}
     })
     const [selectedItems, setSelectedItems] = useState<string[]>([])
     const [visibleColumns, setVisibleColumns] = useState<Set<keyof T>>(
@@ -92,7 +93,7 @@ export function AdvancedTable<T extends Record<string, any>>({
 
     const debouncedSearch = useDebounce(tableState.search, 300)
 
-    const { data, isLoading, error, get } = useApi<T>(endpoint)
+    const {data, isLoading, get} = useApi<T>(endpoint)
 
     const queryParams = useMemo(() => ({
         page: tableState.page.toString(),
@@ -114,9 +115,10 @@ export function AdvancedTable<T extends Record<string, any>>({
                 })
             }
         } catch (error) {
+            const errorResponse = error as ErrorResponse
             if (enableToast) {
-                toast('Error', {
-                    description: "Failed to fetch data",
+                toast.error('Error', {
+                    description: errorResponse.message || 'An error occurred during login.',
                 })
             }
         }
@@ -128,7 +130,7 @@ export function AdvancedTable<T extends Record<string, any>>({
 
     const updateTableState = useCallback((newState: Partial<TableState<T>>) => {
         setTableState(prevState => {
-            const updatedState = { ...prevState, ...newState }
+            const updatedState = {...prevState, ...newState}
             if (onSearchChange && 'search' in newState) {
                 onSearchChange(updatedState.search)
             }
@@ -173,7 +175,7 @@ export function AdvancedTable<T extends Record<string, any>>({
     const handleDateRangeChange = useCallback(
         (startDate: string, endDate: string) => {
             updateTableState({
-                dateRange: { startDate, endDate },
+                dateRange: {startDate, endDate},
                 page: 1
             })
         },
@@ -182,7 +184,7 @@ export function AdvancedTable<T extends Record<string, any>>({
 
     const handleTrashSwitch = useCallback(
         (checked: boolean) => {
-            updateTableState({ includeTrashed: checked, page: 1 })
+            updateTableState({includeTrashed: checked, page: 1})
             onTrashSwitchChange?.(checked)
         },
         [updateTableState, onTrashSwitchChange]
@@ -202,19 +204,19 @@ export function AdvancedTable<T extends Record<string, any>>({
 
     const getSortIcon = (column: keyof T) => {
         if (column !== tableState.sortColumn)
-            return <CaretSortIcon className='ml-2 h-4 w-4' aria-hidden='true' />
+            return <CaretSortIcon className='ml-2 h-4 w-4' aria-hidden='true'/>
         if (tableState.sortDirection === 'asc')
-            return <ArrowUpIcon className='ml-2 h-4 w-4' aria-hidden='true' />
+            return <ArrowUpIcon className='ml-2 h-4 w-4' aria-hidden='true'/>
         if (tableState.sortDirection === 'desc')
-            return <ArrowDownIcon className='ml-2 h-4 w-4' aria-hidden='true' />
-        return <CaretSortIcon className='ml-2 h-4 w-4' aria-hidden='true' />
+            return <ArrowDownIcon className='ml-2 h-4 w-4' aria-hidden='true'/>
+        return <CaretSortIcon className='ml-2 h-4 w-4' aria-hidden='true'/>
     }
 
     const TableSkeleton = () => (
         <TableRow>
             {[...Array(columns.length + 2)].map((_, index) => (
                 <TableCell key={index}>
-                    <Skeleton className='h-6 w-full rounded-lg bg-secondary' />
+                    <Skeleton className='h-6 w-full rounded-lg bg-secondary'/>
                 </TableCell>
             ))}
         </TableRow>
@@ -229,10 +231,8 @@ export function AdvancedTable<T extends Record<string, any>>({
     )
 
     const handlePerPageChange = (perPage: number) => {
-        updateTableState({ perPage, page: 1 })
+        updateTableState({perPage, page: 1})
     }
-
-    if (error) return <div>Error: {error.message}</div>
 
     return (
         <div className="w-full space-y-2.5">
@@ -253,7 +253,7 @@ export function AdvancedTable<T extends Record<string, any>>({
                             type='search'
                             placeholder='Search...'
                             value={tableState.search}
-                            onChange={e => updateTableState({ search: e.target.value, page: 1 })}
+                            onChange={e => updateTableState({search: e.target.value, page: 1})}
                             className='h-9 bg-card shadow-sm'
                         />
                     </div>
@@ -279,13 +279,13 @@ export function AdvancedTable<T extends Record<string, any>>({
                                 size="sm"
                                 className="ml-auto hidden h-8 lg:flex bg-card"
                             >
-                                <MixerHorizontalIcon className="mr-2 size-4" />
+                                <MixerHorizontalIcon className="mr-2 size-4"/>
                                 View
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-40">
                             <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
+                            <DropdownMenuSeparator/>
                             {columns.map(column => (
                                 <DropdownMenuCheckboxItem
                                     key={column.key as string}
@@ -329,19 +329,19 @@ export function AdvancedTable<T extends Record<string, any>>({
                                                 <DropdownMenuContent align="start">
                                                     <DropdownMenuItem onClick={() => handleSort(column.key)}>
                                                         <ArrowUpIcon
-                                                            className='mr-2 h-3.5 w-3.5 text-muted-foreground/70' />
+                                                            className='mr-2 h-3.5 w-3.5 text-muted-foreground/70'/>
                                                         Asc
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem onClick={() => handleSort(column.key)}>
                                                         <ArrowDownIcon
-                                                            className='mr-2 h-3.5 w-3.5 text-muted-foreground/70' />
+                                                            className='mr-2 h-3.5 w-3.5 text-muted-foreground/70'/>
                                                         Desc
                                                     </DropdownMenuItem>
                                                     {enableColumnVisibility && (
                                                         <DropdownMenuItem
                                                             onClick={() => toggleColumnVisibility(column.key)}>
                                                             <EyeNoneIcon
-                                                                className='mr-2 h-3.5 w-3.5 text-muted-foreground/70' />
+                                                                className='mr-2 h-3.5 w-3.5 text-muted-foreground/70'/>
                                                             Hide
                                                         </DropdownMenuItem>
                                                     )}
@@ -357,7 +357,7 @@ export function AdvancedTable<T extends Record<string, any>>({
                         </TableHeader>
                         <TableBody>
                             {isLoading ? (
-                                [...Array(5)].map((_, index) => <TableSkeleton key={index} />)
+                                [...Array(5)].map((_, index) => <TableSkeleton key={index}/>)
                             ) : data?.data && data.data.length > 0 ? (
                                 data.data.map((item) => (
                                     <TableRow
@@ -384,11 +384,11 @@ export function AdvancedTable<T extends Record<string, any>>({
                                     </TableRow>
                                 ))
                             ) : (
-                                <NoResultsMessage />
+                                <NoResultsMessage/>
                             )}
                         </TableBody>
                     </Table>
-                    <ScrollBar orientation="horizontal" />
+                    <ScrollBar orientation="horizontal"/>
                 </ScrollArea>
             </div>
             <div className="flex flex-col gap-2.5">
@@ -408,7 +408,7 @@ export function AdvancedTable<T extends Record<string, any>>({
                                     onValueChange={(value) => handlePerPageChange(Number(value))}
                                 >
                                     <SelectTrigger className='h-8 w-[70px] bg-card'>
-                                        <SelectValue placeholder={tableState.perPage.toString()} />
+                                        <SelectValue placeholder={tableState.perPage.toString()}/>
                                     </SelectTrigger>
                                     <SelectContent>
                                         {[5, 10, 20, 25, 50].map((value) => (
@@ -428,38 +428,38 @@ export function AdvancedTable<T extends Record<string, any>>({
                                 <Button
                                     variant='outline'
                                     className='hidden h-8 w-8 p-0 lg:flex'
-                                    onClick={() => updateTableState({ page: 1 })}
+                                    onClick={() => updateTableState({page: 1})}
                                     disabled={tableState.page === 1}
                                     aria-label="Go to first page"
                                 >
-                                    <ChevronsLeft className="h-4 w-4" />
+                                    <ChevronsLeft className="h-4 w-4"/>
                                 </Button>
                                 <Button
                                     variant='outline'
                                     className='h-8 w-8 p-0'
-                                    onClick={() => updateTableState({ page: tableState.page - 1 })}
+                                    onClick={() => updateTableState({page: tableState.page - 1})}
                                     disabled={tableState.page === 1}
                                     aria-label="Go to previous page"
                                 >
-                                    <ChevronLeft className="h-4 w-4" />
+                                    <ChevronLeft className="h-4 w-4"/>
                                 </Button>
                                 <Button
                                     variant='outline'
                                     className='h-8 w-8 p-0'
-                                    onClick={() => updateTableState({ page: tableState.page + 1 })}
+                                    onClick={() => updateTableState({page: tableState.page + 1})}
                                     disabled={tableState.page === data?.meta.last_page}
                                     aria-label="Go to next page"
                                 >
-                                    <ChevronRight className="h-4 w-4" />
+                                    <ChevronRight className="h-4 w-4"/>
                                 </Button>
                                 <Button
                                     variant='outline'
                                     className='hidden h-8 w-8 p-0 lg:flex'
-                                    onClick={() => updateTableState({ page: data?.meta.last_page || 1 })}
+                                    onClick={() => updateTableState({page: data?.meta.last_page || 1})}
                                     disabled={tableState.page === data?.meta.last_page}
                                     aria-label="Go to last page"
                                 >
-                                    <ChevronsRight className="h-4 w-4" />
+                                    <ChevronsRight className="h-4 w-4"/>
                                 </Button>
                             </div>
                         </>

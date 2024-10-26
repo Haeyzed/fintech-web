@@ -4,11 +4,11 @@ import * as React from "react"
 import {ModeToggle} from "@/components/mode-toggle";
 
 export function NavActions() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isOpen, setIsOpen] = React.useState(false)
 
   React.useEffect(() => {
     setIsOpen(true)
-    console.log(isOpen)
   }, [])
 
   return (
