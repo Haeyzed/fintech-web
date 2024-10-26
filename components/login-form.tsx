@@ -26,7 +26,7 @@ const formSchema = z.object({
 
 type LoginFormValues = z.infer<typeof formSchema>;
 
-export function SignUpForm() {
+export default function LoginForm() {
     const router = useRouter()
     const { post, isLoading } = useApi<void, LoginFormValues>('/auth/login')
 

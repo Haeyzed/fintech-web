@@ -1,14 +1,10 @@
 "use client"
 
-import { ChevronRight, MoreHorizontal, Folder, Forward, Trash2, type LucideIcon } from "lucide-react"
-import { usePathname } from "next/navigation"
+import {ChevronRight, type LucideIcon} from "lucide-react"
+import {usePathname} from "next/navigation"
 import Link from "next/link"
 
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+import {Collapsible, CollapsibleContent, CollapsibleTrigger,} from "@/components/ui/collapsible"
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -18,16 +14,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-  SidebarMenuAction,
-  useSidebar,
 } from "@/components/ui/sidebar"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 
 type NavItem = {
   title: string
@@ -45,7 +32,7 @@ export function NavMain({
   items: NavItem[]
 }) {
   const pathname = usePathname()
-  const { isMobile } = useSidebar()
+  // const { isMobile } = useSidebar()
 
   const isActive = (url: string) => {
     const localePrefix = `/${pathname.split('/')[1]}`
@@ -102,33 +89,6 @@ export function NavMain({
                 <span>{item.title}</span>
               </Link>
             </SidebarMenuButton>
-            {/*<DropdownMenu>*/}
-            {/*  <DropdownMenuTrigger asChild>*/}
-            {/*    <SidebarMenuAction showOnHover>*/}
-            {/*      <MoreHorizontal />*/}
-            {/*      <span className="sr-only">More</span>*/}
-            {/*    </SidebarMenuAction>*/}
-            {/*  </DropdownMenuTrigger>*/}
-            {/*  <DropdownMenuContent*/}
-            {/*      className="w-48 rounded-lg"*/}
-            {/*      side={isMobile ? "bottom" : "right"}*/}
-            {/*      align={isMobile ? "end" : "start"}*/}
-            {/*  >*/}
-            {/*    <DropdownMenuItem>*/}
-            {/*      <Folder className="text-muted-foreground" />*/}
-            {/*      <span>View {item.title}</span>*/}
-            {/*    </DropdownMenuItem>*/}
-            {/*    <DropdownMenuItem>*/}
-            {/*      <Forward className="text-muted-foreground" />*/}
-            {/*      <span>Share {item.title}</span>*/}
-            {/*    </DropdownMenuItem>*/}
-            {/*    <DropdownMenuSeparator />*/}
-            {/*    <DropdownMenuItem>*/}
-            {/*      <Trash2 className="text-muted-foreground" />*/}
-            {/*      <span>Delete {item.title}</span>*/}
-            {/*    </DropdownMenuItem>*/}
-            {/*  </DropdownMenuContent>*/}
-            {/*</DropdownMenu>*/}
           </SidebarMenuItem>
       )
     }

@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useCallback } from 'react'
-import Image from 'next/image'
 import { AdvancedTable, Column } from '@/components/table/advanced-table'
 import { User } from '@/types/auth'
 import { Edit, RefreshCw, Shield, Trash, Trash2 } from "lucide-react"
@@ -44,39 +43,46 @@ const columns: Column<User>[] = [
 ]
 
 export default function UsersPage() {
-    function handleEditUser(item: User) {
-        return undefined;
-    }
-
-    function handleDelete(id: string) {
-        return undefined;
-    }
-
-    function handleRestore(id: string) {
-        return undefined;
-    }
-
-    function handleForceDelete(id: string) {
-        return undefined;
-    }
-
-    function handleBlockIp(id: string) {
-        return undefined;
-    }
-
     const itemActions = useCallback(
-        (item: User) => (
-            <ItemActions
-                actions={[
-                    {label: 'Edit', onClick: () => handleEditUser(item), icon: Edit},
-                    {label: 'Delete', onClick: () => handleDelete(item.id), icon: Trash},
-                    {label: 'Restore', onClick: () => handleRestore(item.id), icon: RefreshCw},
-                    {label: 'Force Delete', onClick: () => handleForceDelete(item.id), icon: Trash2},
-                    {label: 'Block IP', onClick: () => handleBlockIp(item.id), icon: Shield},
-                ]}
-            />
-        ),
-        [handleDelete, handleForceDelete, handleRestore]
+        (item: User) => {
+            const handleEditUser = () => {
+                // Implement edit user logic here
+                console.log('Edit user:', item.id);
+            };
+
+            const handleDelete = () => {
+                // Implement delete logic here
+                console.log('Delete user:', item.id);
+            };
+
+            const handleRestore = () => {
+                // Implement restore logic here
+                console.log('Restore user:', item.id);
+            };
+
+            const handleForceDelete = () => {
+                // Implement force delete logic here
+                console.log('Force delete user:', item.id);
+            };
+
+            const handleBlockIp = () => {
+                // Implement block IP logic here
+                console.log('Block IP for user:', item.id);
+            };
+
+            return (
+                <ItemActions
+                    actions={[
+                        {label: 'Edit', onClick: handleEditUser, icon: Edit},
+                        {label: 'Delete', onClick: handleDelete, icon: Trash},
+                        {label: 'Restore', onClick: handleRestore, icon: RefreshCw},
+                        {label: 'Force Delete', onClick: handleForceDelete, icon: Trash2},
+                        {label: 'Block IP', onClick: handleBlockIp, icon: Shield},
+                    ]}
+                />
+            );
+        },
+        []
     );
 
     return (
