@@ -1,16 +1,16 @@
 'use client'
 
-import {useRouter, useSearchParams} from 'next/navigation'
-import {zodResolver} from '@hookform/resolvers/zod'
-import {useForm} from 'react-hook-form'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
 import * as z from 'zod'
-import {Button} from '@/components/ui/button'
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/components/ui/form'
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
-import {PasswordInput} from "@/components/password-input"
-import {toast} from "sonner"
-import {useApi} from '@/hooks/use-api'
-import {AuthResponse, ErrorResponse} from '@/types/auth'
+import { Button } from '@/components/ui/button'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { PasswordInput } from "@/components/password-input"
+import { toast } from "sonner"
+import { useApi } from '@/hooks/use-api'
+import { AuthResponse, ErrorResponse } from '@/types/auth'
 
 const formSchema = z.object({
     password: z.string().min(8, {
@@ -24,11 +24,14 @@ const formSchema = z.object({
     path: ["password_confirmation"],
 });
 
-type ResetPasswordFormValues = z.infer<typeof formSchema>;
+type ResetPasswordFormValues = z.infer<typeof formSchema> & {
+    email: string;
+    token: string;
+};
 
 export function ResetPasswordForm() {
     const router = useRouter()
-    const {post, isLoading} = useApi<AuthResponse, ResetPasswordFormValues>('/auth/reset-password')
+    const { post, isLoading } = useApi<AuthResponse, ResetPasswordFormValues>('/auth/reset-password')
     const searchParams = useSearchParams()
 
     const token = searchParams.get('token')
@@ -39,22 +42,19 @@ export function ResetPasswordForm() {
         defaultValues: {
             password: '',
             password_confirmation: '',
+            email: email ? decodeURIComponent(email) : '',
+            token: token || '',
         },
     })
 
     async function onSubmit(values: ResetPasswordFormValues) {
-        if (!token || !email) {
-            toast.error('Error',
-                {description: 'Invalid Link'})
+        if (!values.token || !values.email) {
+            toast.error('Error', { description: 'Invalid Link' })
             return
         }
 
         try {
-            const response = await post({
-                ...values,
-                email: decodeURIComponent(email),
-                token,
-            })
+            const response = await post(values)
             toast.success('Success', {
                 description: response.message || 'Password reset successful.',
             })

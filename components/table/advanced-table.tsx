@@ -125,7 +125,7 @@ export function AdvancedTable<T extends { id: string | number }>({
     }, [get, queryParams, enableToast])
 
     useEffect(() => {
-        fetchData()
+        fetchData().then(r => console.log(r))
     }, [fetchData])
 
     const updateTableState = useCallback((newState: Partial<TableState<T>>) => {
@@ -140,7 +140,7 @@ export function AdvancedTable<T extends { id: string | number }>({
 
     const handleSelectAll = useCallback(
         (checked: boolean) => {
-            const newSelectedItems = checked ? (data?.data.map(item => item.id) || []) : []
+            const newSelectedItems = checked ? (data?.data.map(item => (item.id as string)) || []) : []
             setSelectedItems(newSelectedItems)
             onSelectionChange?.(newSelectedItems)
         },
@@ -362,13 +362,13 @@ export function AdvancedTable<T extends { id: string | number }>({
                                 data.data.map((item) => (
                                     <TableRow
                                         key={item.id}
-                                        data-state={selectedItems.includes(item.id) ? 'selected' : undefined}
+                                        data-state={selectedItems.includes(item.id as string) ? 'selected' : undefined}
                                     >
                                         <TableCell>
                                             <Checkbox
-                                                checked={selectedItems.includes(item.id)}
+                                                checked={selectedItems.includes(item.id as string)}
                                                 onCheckedChange={checked =>
-                                                    handleSelectItem(item.id, checked as boolean)
+                                                    handleSelectItem(item.id as string, checked as boolean)
                                                 }
                                                 aria-label={`Select ${item.id}`}
                                             />
