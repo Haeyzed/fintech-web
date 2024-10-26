@@ -46,27 +46,22 @@ export default function UsersPage() {
     const itemActions = useCallback(
         (item: User) => {
             const handleEditUser = () => {
-                // Implement edit user logic here
                 console.log('Edit user:', item.id);
             };
 
             const handleDelete = () => {
-                // Implement delete logic here
                 console.log('Delete user:', item.id);
             };
 
             const handleRestore = () => {
-                // Implement restore logic here
                 console.log('Restore user:', item.id);
             };
 
             const handleForceDelete = () => {
-                // Implement force delete logic here
                 console.log('Force delete user:', item.id);
             };
 
             const handleBlockIp = () => {
-                // Implement block IP logic here
                 console.log('Block IP for user:', item.id);
             };
 

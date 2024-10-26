@@ -60,7 +60,7 @@ interface AdvancedTableProps<T> {
     enableSort?: boolean
 }
 
-export function AdvancedTable<T extends Record<string, unknown>>({
+export function AdvancedTable<T extends { id: string | number }>({
                                                                      columns,
                                                                      endpoint,
                                                                      itemActions,
