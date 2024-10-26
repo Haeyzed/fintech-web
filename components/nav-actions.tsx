@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import {ModeToggle} from "@/components/mode-toggle";
+import LocaleSwitcher from '@/components/locale-switcher'
 
 export function NavActions() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -14,6 +15,7 @@ export function NavActions() {
   return (
     <div className="flex items-center gap-2 text-sm">
       <ModeToggle/>
+      <LocaleSwitcher/>
     </div>
   )
 }
