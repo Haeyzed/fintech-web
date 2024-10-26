@@ -1,3 +1,4 @@
+import { getCookie } from 'cookies-next';
 import { ErrorResponse } from '@/types/auth';
 import Env from "@/lib/env";
 
@@ -32,9 +33,14 @@ async function client<TResponse, TRequest extends Record<string, unknown> = Reco
     { params, token, ...customConfig }: RequestOptions<TRequest> = {}
 ): Promise<ApiResponse<TResponse>> {
     const headers: HeadersInit = new Headers();
+    const locale = getCookie('NEXT_LOCALE') as string | undefined;
 
     if (token) {
         headers.set('Authorization', `Bearer ${token}`);
+    }
+
+    if (locale) {
+        headers.set('Accept-Language', locale);
     }
 
     const config: RequestInit = {
