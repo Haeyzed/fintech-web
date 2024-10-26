@@ -2,139 +2,112 @@
 
 import * as React from "react"
 import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
+  FileBarChart,
   Frame,
   GalleryVerticalEnd,
+  Key,
+  LayoutDashboard,
+  LifeBuoy,
   Map,
   PieChart,
+  Send,
   Settings2,
-  SquareTerminal,
+  Store,
+  Users,
 } from "lucide-react"
 
-import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
-import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarRail,
-} from "@/components/ui/sidebar"
+import {NavMain} from "@/components/nav-main"
+import {NavUser} from "@/components/nav-user"
+import {TeamSwitcher} from "@/components/team-switcher"
+import {Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail,} from "@/components/ui/sidebar"
+import {NavSecondary} from "@/components/nav-secondary"
+import {useAuth} from "@/hooks/use-auth"
+import {Skeleton} from "@/components/ui/skeleton"
+import {SearchForm} from "@/components/search-form"
 
 // This is sample data.
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
+export const data = {
   teams: [
     {
-      name: "Acme Inc",
+      name: "Simbrella",
       logo: GalleryVerticalEnd,
-      plan: "Enterprise",
+      plan: "Simbrella",
     },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
+    // {
+    //   name: "Acme Corp.",
+    //   logo: AudioWaveform,
+    //   plan: "Startup",
+    // },
+    // {
+    //   name: "Evil Corp.",
+    //   logo: Command,
+    //   plan: "Free",
+    // },
   ],
   navMain: [
     {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: LayoutDashboard,
     },
     {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
+      title: "Companies",
+      url: "/companies",
+      icon: Store,
     },
     {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
+      title: "Users",
+      url: "/users",
+      icon: Users,
+    },
+    {
+      title: "OAuth Clients",
+      url: "/oauth-clients",
+      icon: Key,
+    },
+    {
+      title: "Access Logs",
+      url: "/access-logs",
+      icon: FileBarChart,
     },
     {
       title: "Settings",
-      url: "#",
+      url: "/settings",
       icon: Settings2,
       items: [
         {
-          title: "General",
-          url: "#",
+          title: "Profile",
+          url: "/settings/profile",
         },
         {
-          title: "Team",
-          url: "#",
+          title: "Account",
+          url: "/settings/account",
         },
         {
-          title: "Billing",
-          url: "#",
+          title: "Security",
+          url: "/settings/security",
         },
         {
-          title: "Limits",
-          url: "#",
+          title: "Appearance",
+          url: "/settings/appearance",
+        },
+        {
+          title: "Notifications",
+          url: "/settings/notifications",
         },
       ],
+    },
+  ],
+  navSecondary: [
+    {
+      title: "Support",
+      url: "/support",
+      icon: LifeBuoy,
+    },
+    {
+      title: "Feedback",
+      url: "/feedback",
+      icon: Send,
     },
   ],
   projects: [
@@ -157,19 +130,41 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { user, isLoading } = useAuth()
+  const [searchQuery, setSearchQuery] = React.useState("")
+
+  const filteredNavMain = data.navMain.filter(item =>
+      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.items?.some(subItem => subItem.title.toLowerCase().includes(searchQuery.toLowerCase()))
+  )
+
+  const filteredNavSecondary = data.navSecondary.filter(item =>
+      item.title.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query)
+  }
+
   return (
-    <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
-      </SidebarHeader>
-      <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
-      </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={data.user} />
-      </SidebarFooter>
-      <SidebarRail />
-    </Sidebar>
+      <Sidebar collapsible="icon" {...props}>
+        <SidebarHeader>
+          <TeamSwitcher teams={data.teams} />
+          <SearchForm onSearch={handleSearch} />
+        </SidebarHeader>
+        <SidebarContent>
+          <NavMain items={filteredNavMain} />
+          {/*<NavProjects projects={data.projects}/>*/}
+          <NavSecondary items={filteredNavSecondary} className="mt-auto" />
+        </SidebarContent>
+        <SidebarFooter>
+          {isLoading ? (
+              <Skeleton className="h-12 w-full" />
+          ) : (
+              <NavUser user={user} />
+          )}
+        </SidebarFooter>
+        <SidebarRail />
+      </Sidebar>
   )
 }

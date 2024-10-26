@@ -1,7 +1,7 @@
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { AuthResponse, User } from '@/types/auth'
-import { API_BASE_URL } from "@/utils/api-client"
+import { API_BASE_URL } from "@/lib/api-client"
 
 declare module "next-auth" {
     interface Session {
