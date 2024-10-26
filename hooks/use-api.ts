@@ -16,7 +16,7 @@ interface ApiHook<TResponse, TRequest = TResponse> {
     del: (params?: Record<string, string>) => Promise<ApiResponse<TResponse>>;
 }
 
-export function useApi<TResponse, TRequest extends Record<string, any> = Record<string, any>>(endpoint: string): ApiHook<TResponse, TRequest> {
+export function useApi<TResponse, TRequest extends Record<string, unknown> = Record<string, unknown>>(endpoint: string): ApiHook<TResponse, TRequest> {
     const [data, setData] = useState<ApiResponse<TResponse> | null>(null);
     const [error, setError] = useState<ErrorResponse | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);

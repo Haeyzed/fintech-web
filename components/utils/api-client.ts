@@ -24,7 +24,7 @@ export interface ApiResponse<T> {
     errors?: Record<string, string[]>;
 }
 
-async function client<TResponse, TRequest extends Record<string, any> = Record<string, any>>(
+async function client<TResponse, TRequest extends Record<string, unknown> = Record<string, unknown>>(
     endpoint: string,
     { params, token, ...customConfig }: RequestOptions<TRequest> = {}
 ): Promise<ApiResponse<TResponse>> {
@@ -47,7 +47,9 @@ async function client<TResponse, TRequest extends Record<string, any> = Record<s
     }
 
     Object.entries(customConfig.headers || {}).forEach(([key, value]) => {
-        headers.set(key, value);
+        if (typeof value === 'string') {
+            headers.set(key, value);
+        }
     });
 
     const url = new URL(`${API_BASE_URL}${endpoint}`);
