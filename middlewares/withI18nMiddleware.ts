@@ -49,7 +49,7 @@ export function withI18nMiddleware(middleware: CustomMiddleware) {
         }
 
         // Set the X-App-Language header
-        response.headers.set('App-Language', locale);
+        response.headers.set('x-App-Language', locale);
 
         return middleware(request, event, response);
     };

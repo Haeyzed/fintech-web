@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import client, { ApiResponse } from '@/lib/api-client';
+import client, { ApiResponse } from '@/components/utils/api-client';
 import { ErrorResponse } from '@/types/auth';
 
 type ApiMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
