@@ -1,4 +1,3 @@
-import { getSession } from "next-auth/react";
 import { ErrorResponse } from '@/types/auth';
 
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://fintech-api.test/api/v1';
@@ -9,6 +8,7 @@ interface RequestOptions<T> extends Omit<RequestInit, 'method' | 'body'> {
     method?: HttpMethod;
     params?: Record<string, string>;
     body?: T | FormData;
+    token?: string;
 }
 
 export interface ApiResponse<T> {
@@ -26,13 +26,12 @@ export interface ApiResponse<T> {
 
 async function client<TResponse, TRequest extends Record<string, any> = Record<string, any>>(
     endpoint: string,
-    { params, ...customConfig }: RequestOptions<TRequest> = {}
+    { params, token, ...customConfig }: RequestOptions<TRequest> = {}
 ): Promise<ApiResponse<TResponse>> {
-    const session = await getSession();
     const headers: HeadersInit = new Headers();
 
-    if (session?.user?.token) {
-        headers.set('Authorization', `Bearer ${session.user.token}`);
+    if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
     }
 
     const config: RequestInit = {

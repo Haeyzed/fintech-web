@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { useSession } from 'next-auth/react';
 import client, { ApiResponse } from '@/components/utils/api-client';
 import { ErrorResponse } from '@/types/auth';
 
@@ -19,6 +20,7 @@ export function useApi<TResponse, TRequest extends Record<string, any> = Record<
     const [data, setData] = useState<ApiResponse<TResponse> | null>(null);
     const [error, setError] = useState<ErrorResponse | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { data: session } = useSession();
 
     const execute = useCallback(
         async (method: ApiMethod, body?: TRequest | FormData, params?: Record<string, string>) => {
@@ -30,6 +32,7 @@ export function useApi<TResponse, TRequest extends Record<string, any> = Record<
                     method,
                     body,
                     params,
+                    token: session?.user?.token,
                 });
                 setData(result);
                 return result;
@@ -41,7 +44,7 @@ export function useApi<TResponse, TRequest extends Record<string, any> = Record<
                 setIsLoading(false);
             }
         },
-        [endpoint]
+        [endpoint, session]
     );
 
     const get = useCallback(
