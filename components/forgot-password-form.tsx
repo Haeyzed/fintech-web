@@ -11,26 +11,27 @@ import {toast} from "sonner"
 import Link from "next/link"
 import {useApi} from '@/hooks/use-api'
 import {AuthResponse, ErrorResponse} from '@/types/auth'
-
-const formSchema = z.object({
-    email: z.string().email({
-        message: 'Please enter a valid email address.',
-    }),
-})
-
-type ForgotPasswordFormValues = z.infer<typeof formSchema>;
+import {useDictionary} from "@/app/[lang]/providers";
+import {Loader2} from "lucide-react";
 
 export function ForgotPasswordForm() {
-    const { post, isLoading } = useApi<AuthResponse, ForgotPasswordFormValues>('/auth/forgot-password')
 
-    const form = useForm<ForgotPasswordFormValues>({
+    const {forgotPassword, formValidation} = useDictionary()
+    const formSchema = z.object({
+        email: z.string().email({
+            message: formValidation.emailRequired
+        })
+    })
+    type FormValues = z.infer<typeof formSchema>;
+    const {post, isLoading} = useApi<AuthResponse, FormValues>('/auth/forgot-password')
+    const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             email: '',
         },
     })
 
-    async function onSubmit(values: ForgotPasswordFormValues) {
+    async function onSubmit(values: FormValues) {
         try {
             const response = await post(values)
             toast.success('Success', {
@@ -49,9 +50,9 @@ export function ForgotPasswordForm() {
     return (
         <Card className="mx-auto max-w-sm">
             <CardHeader>
-                <CardTitle className="text-2xl">Forgot Password</CardTitle>
+                <CardTitle className="text-2xl">{forgotPassword.title}</CardTitle>
                 <CardDescription>
-                    Enter your email address and we&#39;ll send you instructions to reset your password.
+                    {forgotPassword.description}
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -60,25 +61,31 @@ export function ForgotPasswordForm() {
                         <FormField
                             control={form.control}
                             name="email"
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <FormItem>
-                                    <FormLabel>Email</FormLabel>
+                                    <FormLabel>{forgotPassword.email}</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Enter your email" {...field} />
+                                        <Input placeholder={forgotPassword.emailPlaceholder} {...field} />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage/>
                                 </FormItem>
                             )}
                         />
                         <Button type="submit" className="w-full" disabled={isLoading}>
-                            {isLoading ? 'Sending...' : 'Send Reset Link'}
+                            {isLoading ? (
+                                <>
+                                    <Loader2 className='h-4 w-4 animate-spin'/>
+                                </>
+                            ) : (
+                                forgotPassword.submitButton
+                            )}
                         </Button>
                     </form>
                 </Form>
                 <div className="mt-4 text-center text-sm">
-                    Remember your password?{" "}
-                    <Link href="/login" className="underline">
-                        Back to login
+                    {forgotPassword.rememberPassword}{' '}
+                    <Link href={"/login"} className="underline">
+                        {forgotPassword.loginLink}
                     </Link>
                 </div>
             </CardContent>

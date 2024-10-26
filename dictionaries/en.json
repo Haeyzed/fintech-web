@@ -1,0 +1,116 @@
+{
+  "login": {
+    "title": "Login",
+    "description": "Enter your credentials to access your account",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "forgotPassword": "Forgot password?",
+    "loginButton": "Login",
+    "loginWithGoogle": "Login with Google",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up"
+  },
+  "signup": {
+    "title": "Sign Up",
+    "description": "Create a new account to get started",
+    "profileImage": "Profile Image",
+    "name": "Full Name",
+    "namePlaceholder": "Enter your full name",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "username": "Username",
+    "usernamePlaceholder": "Choose a username",
+    "phone": "Phone Number",
+    "phonePlaceholder": "Enter your phone number",
+    "password": "Password",
+    "passwordPlaceholder": "Create a password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "signupButton": "Sign Up",
+    "haveAccount": "Already have an account?",
+    "login": "Log in"
+  },
+  "forgotPassword": {
+    "title": "Forgot Password",
+    "description": "Enter your email address to reset your password",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "submitButton": "Reset Password",
+    "successMessage": "Password reset instructions sent to your email",
+    "rememberPassword": "Remembered your password?",
+    "loginLink": "Login"
+  },
+  "formValidation": {
+    "nameRequired": "Full name is required",
+    "emailRequired": "Email is required",
+    "invalidEmail": "Please enter a valid email address",
+    "usernameRequired": "Username is required",
+    "usernameMinLength": "Username must be at least 3 characters",
+    "phoneRequired": "Phone number is required",
+    "phoneMinLength": "Phone number must be at least 10 digits",
+    "passwordMinLength": "Password must be at least 8 characters",
+    "passwordRequired": "Password is required",
+    "passwordMismatch": "Passwords do not match",
+    "newPasswordRequired": "New password is required",
+    "confirmPasswordRequired": "Please confirm your new password",
+    "tokenRequired": "Reset token is required",
+    "invalidResetToken": "Invalid or expired reset token",
+    "codeRequired": "Code is required"
+  },
+  "resetPassword": {
+    "title": "Reset Password",
+    "description": "Enter a new password for your account",
+    "newPassword": "New Password",
+    "newPasswordPlaceholder": "Enter your new password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm your new password",
+    "submitButton": "Reset Password",
+    "successMessage": "Your password has been successfully reset",
+    "invalidLink": "Invalid or expired reset link",
+    "backToLogin": "Back to Login"
+  },
+  "common": {
+    "closeSidebar": "Close sidebar",
+    "searchInMenu": "Search in menu"
+  },
+  "navItems": {
+    "Dashboard": "Dashboard",
+    "Vendors": "Vendors",
+    "Users": "Users",
+    "OAuth Clients": "OAuth Clients",
+    "Access Logs": "Access Logs"
+  },
+  "modeToggle": {
+    "toggleTheme": "Toggle theme",
+    "enterDarkMode": "Enter Dark Mode",
+    "enterLightMode": "Enter Light Mode",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "header": {
+    "toggleNavigationMenu": "Toggle navigation menu",
+    "goBack": "Go back",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Log out"
+  },
+  "authLayout": {
+    "copyright": "© {year} {companyName}. All rights reserved.",
+    "poweredBy": "Powered by"
+  },
+  "twoFactor": {
+    "title": "Two-Factor Authentication",
+    "description": "Enter the 6-digit code from your authenticator app.",
+    "code": "Authentication Code",
+    "codePlaceholder": "Enter your 6-digit code",
+    "verifyButton": "Verify",
+    "recoveryCodeDescription": "Enter one of your recovery codes.",
+    "recoveryCode": "Recovery Code",
+    "recoveryCodePlaceholder": "Enter your recovery code",
+    "useRecoveryCode": "Use a recovery code instead",
+    "useAuthenticatorApp": "Use authenticator app instead"
+  }
+}

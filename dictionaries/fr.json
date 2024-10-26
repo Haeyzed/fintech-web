@@ -1,0 +1,116 @@
+{
+  "signup": {
+    "title": "Inscription",
+    "description": "Créez un nouveau compte pour commencer",
+    "profileImage": "Image de profil",
+    "name": "Nom complet",
+    "namePlaceholder": "Entrez votre nom complet",
+    "email": "Email",
+    "emailPlaceholder": "Entrez votre email",
+    "username": "Nom d'utilisateur",
+    "usernamePlaceholder": "Choisissez un nom d'utilisateur",
+    "phone": "Numéro de téléphone",
+    "phonePlaceholder": "Entrez votre numéro de téléphone",
+    "password": "Mot de passe",
+    "passwordPlaceholder": "Créez un mot de passe",
+    "confirmPassword": "Confirmez le mot de passe",
+    "confirmPasswordPlaceholder": "Confirmez votre mot de passe",
+    "signupButton": "S'inscrire",
+    "haveAccount": "Vous avez déjà un compte ?",
+    "login": "Se connecter"
+  },
+  "login": {
+    "title": "Connexion",
+    "description": "Entrez vos identifiants pour accéder à votre compte",
+    "email": "Email",
+    "emailPlaceholder": "Entrez votre email",
+    "password": "Mot de passe",
+    "passwordPlaceholder": "Entrez votre mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "loginButton": "Se connecter",
+    "loginWithGoogle": "Se connecter avec Google",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "signUp": "S'inscrire"
+  },
+  "forgotPassword": {
+    "title": "Mot de passe oublié",
+    "description": "Entrez votre adresse email pour réinitialiser votre mot de passe",
+    "email": "E-mail",
+    "emailPlaceholder": "Entrez votre email",
+    "submitButton": "Réinitialiser le mot de passe",
+    "successMessage": "Instructions de réinitialisation du mot de passe envoyées à votre adresse e-mail",
+    "rememberPassword": "Vous vous souvenez de votre mot de passe ?",
+    "loginLink": "Se connecter"
+  },
+  "resetPassword": {
+    "title": "Réinitialiser le mot de passe",
+    "description": "Entrez un nouveau mot de passe pour votre compte",
+    "newPassword": "Nouveau mot de passe",
+    "newPasswordPlaceholder": "Entrez votre nouveau mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "confirmPasswordPlaceholder": "Confirmez votre nouveau mot de passe",
+    "submitButton": "Réinitialiser le mot de passe",
+    "successMessage": "Votre mot de passe a été réinitialisé avec succès",
+    "invalidLink": "Lien de réinitialisation invalide ou expiré",
+    "backToLogin": "Retour à la connexion"
+  },
+  "formValidation": {
+    "nameRequired": "Le nom complet est requis",
+    "emailRequired": "L'email est requis",
+    "usernameMinLength": "Le nom d'utilisateur doit comporter au moins 3 caractères",
+    "phoneMinLength": "Le numéro de téléphone doit comporter au moins 10 chiffres",
+    "passwordMinLength": "Le mot de passe doit comporter au moins 8 caractères",
+    "invalidEmail": "Veuillez entrer une adresse e-mail valide",
+    "usernameRequired": "Le nom d'utilisateur est requis",
+    "phoneRequired": "Le numéro de téléphone est requis",
+    "passwordRequired": "Le mot de passe est requis",
+    "passwordMismatch": "Les mots de passe ne correspondent pas",
+    "newPasswordRequired": "Le nouveau mot de passe est requis",
+    "confirmPasswordRequired": "Veuillez confirmer votre nouveau mot de passe",
+    "tokenRequired": "Le jeton de réinitialisation est requis",
+    "invalidResetToken": "Jeton de réinitialisation invalide ou expiré",
+    "codeRequired": "Le code est requis"
+  },
+  "common": {
+    "closeSidebar": "Fermer la barre latérale",
+    "searchInMenu": "Rechercher dans le menu"
+  },
+  "navItems": {
+    "Dashboard": "Tableau de bord",
+    "Vendors": "Fournisseurs",
+    "Users": "Utilisateurs",
+    "OAuth Clients": "Clients OAuth",
+    "Access Logs": "Journaux d'accès"
+  },
+  "modeToggle": {
+    "toggleTheme": "Changer de thème",
+    "enterDarkMode": "Passer en mode sombre",
+    "enterLightMode": "Passer en mode clair",
+    "light": "Clair",
+    "dark": "Sombre",
+    "system": "Système"
+  },
+  "header": {
+    "toggleNavigationMenu": "Basculer le menu de navigation",
+    "goBack": "Retour",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "logout": "Se déconnecter"
+  },
+  "authLayout": {
+    "copyright": "© {year} {companyName}. Tous droits réservés.",
+    "poweredBy": "Propulsé par"
+  },
+  "twoFactor": {
+    "title": "Authentification à deux facteurs",
+    "description": "Saisissez le code à 6 chiffres de votre application d'authentification.",
+    "code": "Code d'authentification",
+    "codePlaceholder": "Entrez votre code à 6 chiffres",
+    "verifyButton": "Vérifier",
+    "recoveryCodeDescription": "Entrez l'un de vos codes de récupération.",
+    "recoveryCode": "Code de récupération",
+    "recoveryCodePlaceholder": "Entrez votre code de récupération",
+    "useRecoveryCode": "Utilisez plutôt un code de récupération",
+    "useAuthenticatorApp": "Utilisez plutôt l'application d'authentification"
+  }
+}

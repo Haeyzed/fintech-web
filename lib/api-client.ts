@@ -1,6 +1,9 @@
 import { ErrorResponse } from '@/types/auth';
+import Env from "@/lib/env";
 
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://fintech-api.test/api/v1';
+export const API_VERSION = 'v1'
+export const API_URL = `${Env.API_URL}/api/${API_VERSION}`
+export const API_BASE_URL = API_URL || 'http://fintech-api.test/api/v1';
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 

@@ -1,0 +1,116 @@
+{
+  "signup": {
+    "title": "التسجيل",
+    "description": "أنشئ حسابًا جديدًا للبدء",
+    "profileImage": "صورة الملف الشخصي",
+    "name": "الاسم الكامل",
+    "namePlaceholder": "أدخل اسمك الكامل",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "أدخل بريدك الإلكتروني",
+    "username": "اسم المستخدم",
+    "usernamePlaceholder": "اختر اسم مستخدم",
+    "phone": "رقم الهاتف",
+    "phonePlaceholder": "أدخل رقم هاتفك",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "أنشئ كلمة مرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "confirmPasswordPlaceholder": "أكد كلمة المرور",
+    "signupButton": "التسجيل",
+    "haveAccount": "هل لديك حساب بالفعل؟",
+    "login": "تسجيل الدخول"
+  },
+  "login": {
+    "title": "تسجيل الدخول",
+    "description": "أدخل بيانات اعتمادك للوصول إلى حسابك",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "أدخل بريدك الإلكتروني",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "loginButton": "تسجيل الدخول",
+    "loginWithGoogle": "تسجيل الدخول باستخدام جوجل",
+    "noAccount": "ليس لديك حساب؟",
+    "signUp": "التسجيل"
+  },
+  "forgotPassword": {
+    "title": "هل نسيت كلمة السر",
+    "description": "أدخل عنوان بريدك الإلكتروني لإعادة تعيين كلمة المرور الخاصة بك",
+    "email": "بريد إلكتروني",
+    "emailPlaceholder": "أدخل بريدك الإلكتروني",
+    "submitButton": "إعادة تعيين كلمة المرور",
+    "successMessage": "تم إرسال تعليمات إعادة تعيين كلمة المرور إلى بريدك الإلكتروني",
+    "rememberPassword": "تذكرت كلمة المرور الخاصة بك؟",
+    "loginLink": "تسجيل الدخول"
+  },
+  "resetPassword": {
+    "title": "إعادة تعيين كلمة المرور",
+    "description": "أدخل كلمة مرور جديدة لحسابك",
+    "newPassword": "كلمة المرور الجديدة",
+    "newPasswordPlaceholder": "أدخل كلمة المرور الجديدة",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "confirmPasswordPlaceholder": "أكد كلمة المرور الجديدة",
+    "submitButton": "إعادة تعيين كلمة المرور",
+    "successMessage": "تم إعادة تعيين كلمة المرور بنجاح",
+    "invalidLink": "رابط إعادة التعيين غير صالح أو منتهي الصلاحية",
+    "backToLogin": "العودة إلى تسجيل الدخول"
+  },
+  "formValidation": {
+    "nameRequired": "الاسم الكامل مطلوب",
+    "emailRequired": "البريد الإلكتروني مطلوب",
+    "invalidEmail": "يرجى إدخال عنوان بريد إلكتروني صالح",
+    "usernameMinLength": "يجب أن يكون اسم المستخدم 3 أحرف على الأقل",
+    "phoneRequired": "رقم الهاتف مطلوب",
+    "phoneMinLength": "يجب أن يكون رقم الهاتف 10 أرقام على الأقل",
+    "passwordMinLength": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+    "usernameRequired": "اسم المستخدم مطلوب",
+    "passwordRequired": "كلمة المرور مطلوبة",
+    "passwordMismatch": "كلمات المرور غير متطابقة",
+    "newPasswordRequired": "كلمة المرور الجديدة مطلوبة",
+    "confirmPasswordRequired": "يرجى تأكيد كلمة المرور الجديدة",
+    "tokenRequired": "رمز إعادة التعيين مطلوب",
+    "invalidResetToken": "رمز إعادة التعيين غير صالح أو منتهي الصلاحية",
+    "codeRequired": "الكود مطلوب"
+  },
+  "common": {
+    "closeSidebar": "إغلاق الشريط الجانبي",
+    "searchInMenu": "البحث في القائمة"
+  },
+  "navItems": {
+    "Dashboard": "لوحة التحكم",
+    "Vendors": "الموردون",
+    "Users": "المستخدمون",
+    "OAuth Clients": "عملاء OAuth",
+    "Access Logs": "سجلات الوصول"
+  },
+  "modeToggle": {
+    "toggleTheme": "تبديل السمة",
+    "enterDarkMode": "الدخول إلى الوضع الداكن",
+    "enterLightMode": "الدخول إلى الوضع الفاتح",
+    "light": "فاتح",
+    "dark": "داكن",
+    "system": "النظام"
+  },
+  "header": {
+    "toggleNavigationMenu": "تبديل قائمة التنقل",
+    "goBack": "العودة",
+    "profile": "الملف الشخصي",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج"
+  },
+  "authLayout": {
+    "copyright": "© {year} {companyName}. جميع الحقوق محفوظة.",
+    "poweredBy": "مدعوم بواسطة"
+  },
+  "twoFactor": {
+    "title": "المصادقة الثنائية",
+    "description": "أدخل الرمز المكون من 6 أرقام من تطبيق المصادقة الخاص بك.",
+    "code": "رمز المصادقة",
+    "codePlaceholder": "أدخل الرمز الخاص بك المكون من 6 أرقام",
+    "verifyButton": "يؤكد",
+    "recoveryCodeDescription": "أدخل أحد رموز الاسترداد الخاصة بك.",
+    "recoveryCode": "رمز الاسترداد",
+    "recoveryCodePlaceholder": "أدخل رمز الاسترداد الخاص بك",
+    "useRecoveryCode": "استخدم رمز الاسترداد بدلاً من ذلك",
+    "useAuthenticatorApp": "استخدم تطبيق المصادقة بدلاً من ذلك"
+  }
+}

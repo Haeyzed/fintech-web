@@ -1,0 +1,116 @@
+{
+  "signup": {
+    "title": "Registrieren",
+    "description": "Erstellen Sie ein neues Konto, um zu beginnen",
+    "profileImage": "Profilbild",
+    "name": "Vollständiger Name",
+    "namePlaceholder": "Geben Sie Ihren vollständigen Namen ein",
+    "email": "E-Mail",
+    "emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein",
+    "username": "Benutzername",
+    "usernamePlaceholder": "Wählen Sie einen Benutzernamen",
+    "phone": "Telefonnummer",
+    "phonePlaceholder": "Geben Sie Ihre Telefonnummer ein",
+    "password": "Passwort",
+    "passwordPlaceholder": "Erstellen Sie ein Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "confirmPasswordPlaceholder": "Bestätigen Sie Ihr Passwort",
+    "signupButton": "Registrieren",
+    "haveAccount": "Haben Sie bereits ein Konto?",
+    "login": "Anmelden"
+  },
+  "login": {
+    "title": "Anmelden",
+    "description": "Geben Sie Ihre Anmeldedaten ein, um auf Ihr Konto zuzugreifen",
+    "email": "E-Mail",
+    "emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein",
+    "password": "Passwort",
+    "passwordPlaceholder": "Geben Sie Ihr Passwort ein",
+    "forgotPassword": "Passwort vergessen?",
+    "loginButton": "Anmelden",
+    "loginWithGoogle": "Mit Google anmelden",
+    "noAccount": "Sie haben noch kein Konto?",
+    "signUp": "Registrieren"
+  },
+  "forgotPassword": {
+    "title": "Passwort vergessen",
+    "description": "Geben Sie Ihre E-Mail-Adresse ein, um Ihr Passwort zurückzusetzen",
+    "email": "E-Mail",
+    "emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein",
+    "submitButton": "Passwort zurücksetzen",
+    "successMessage": "Anweisungen zum Zurücksetzen des Passworts werden an Ihre E-Mail-Adresse gesendet",
+    "rememberPassword": "Haben Sie Ihr Passwort vergessen?",
+    "loginLink": "Einloggen"
+  },
+  "resetPassword": {
+    "title": "Passwort zurücksetzen",
+    "description": "Geben Sie ein neues Passwort für Ihr Konto ein",
+    "newPassword": "Neues Passwort",
+    "newPasswordPlaceholder": "Geben Sie Ihr neues Passwort ein",
+    "confirmPassword": "Passwort bestätigen",
+    "confirmPasswordPlaceholder": "Bestätigen Sie Ihr neues Passwort",
+    "submitButton": "Passwort zurücksetzen",
+    "successMessage": "Ihr Passwort wurde erfolgreich zurückgesetzt",
+    "invalidLink": "Ungültiger oder abgelaufener Reset-Link",
+    "backToLogin": "Zurück zum Login"
+  },
+  "formValidation": {
+    "nameRequired": "Vollständiger Name ist erforderlich",
+    "emailRequired": "E-Mail ist erforderlich",
+    "usernameMinLength": "Der Benutzername muss mindestens 3 Zeichen lang sein",
+    "phoneMinLength": "Die Telefonnummer muss mindestens 10 Ziffern lang sein",
+    "passwordMinLength": "Das Passwort muss mindestens 8 Zeichen lang sein",
+    "invalidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+    "usernameRequired": "Benutzername ist erforderlich",
+    "phoneRequired": "Telefonnummer ist erforderlich",
+    "passwordRequired": "Passwort ist erforderlich",
+    "passwordMismatch": "Passwörter stimmen nicht überein",
+    "newPasswordRequired": "Neues Passwort ist erforderlich",
+    "confirmPasswordRequired": "Bitte bestätigen Sie Ihr neues Passwort",
+    "tokenRequired": "Reset-Token ist erforderlich",
+    "invalidResetToken": "Ungültiges oder abgelaufenes Reset-Token",
+    "codeRequired": "Code ist erforderlich"
+  },
+  "common": {
+    "closeSidebar": "Seitenleiste schließen",
+    "searchInMenu": "Im Menü suchen"
+  },
+  "navItems": {
+    "Dashboard": "Dashboard",
+    "Vendors": "Anbieter",
+    "Users": "Benutzer",
+    "OAuth Clients": "OAuth-Clients",
+    "Access Logs": "Zugriffsprotokoll"
+  },
+  "modeToggle": {
+    "toggleTheme": "Thema umschalten",
+    "enterDarkMode": "Dunkelmodus aktivieren",
+    "enterLightMode": "Hellmodus aktivieren",
+    "light": "Hell",
+    "dark": "Dunkel",
+    "system": "System"
+  },
+  "header": {
+    "toggleNavigationMenu": "Navigationsmenü umschalten",
+    "goBack": "Zurück",
+    "profile": "Profil",
+    "settings": "Einstellungen",
+    "logout": "Abmelden"
+  },
+  "authLayout": {
+    "copyright": "© {year} {companyName}. Alle Rechte vorbehalten.",
+    "poweredBy": "Unterstützt von"
+  },
+  "twoFactor": {
+    "title": "Zwei-Faktor-Authentifizierung",
+    "description": "Geben Sie den 6-stelligen Code aus Ihrer Authentifizierungs-App ein.",
+    "code": "Authentifizierungscode",
+    "codePlaceholder": "Geben Sie Ihren 6-stelligen Code ein",
+    "verifyButton": "Verifizieren",
+    "recoveryCodeDescription": "Geben Sie einen Ihrer Wiederherstellungscodes ein.",
+    "recoveryCode": "Wiederherstellungscode",
+    "recoveryCodePlaceholder": "Geben Sie Ihren Wiederherstellungscode ein",
+    "useRecoveryCode": "Verwenden Sie stattdessen einen Wiederherstellungscode",
+    "useAuthenticatorApp": "Verwenden Sie stattdessen die Authentifizierungs-App"
+  }
+}

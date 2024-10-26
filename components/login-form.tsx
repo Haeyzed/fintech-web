@@ -14,23 +14,28 @@ import {toast} from "sonner"
 import Link from "next/link"
 import {useApi} from '@/hooks/use-api'
 import {ErrorResponse} from '@/types/auth'
-
-const formSchema = z.object({
-    email: z.string().email({
-        message: 'Please enter a valid email address.',
-    }),
-    password: z.string().min(8, {
-        message: 'Password must be at least 8 characters long.',
-    }),
-})
-
-type LoginFormValues = z.infer<typeof formSchema>;
+import {Loader2} from "lucide-react";
+import {useDictionary} from "@/app/[lang]/providers";
+import {Checkbox} from "@/components/ui/checkbox"
 
 export default function LoginForm() {
     const router = useRouter()
-    const { post, isLoading } = useApi<void, LoginFormValues>('/auth/login')
+    const { login, formValidation } = useDictionary()
+    const formSchema = z.object({
+        email: z.string().email({
+            message: formValidation.emailRequired
+        }),
+        password: z.string().min(8, {
+            message: formValidation.passwordMinLength
+        }),
+        rememberMe: z.boolean().default(false)
+    })
 
-    const form = useForm<LoginFormValues>({
+    type FormValues = z.infer<typeof formSchema>
+
+    const { post, isLoading } = useApi<void, FormValues>('/auth/login')
+
+    const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             email: '',
@@ -38,7 +43,7 @@ export default function LoginForm() {
         },
     })
 
-    async function onSubmit(values: LoginFormValues) {
+    async function onSubmit(values: FormValues) {
         try {
             const response = await post(values)
             const result = await signIn('credentials', {
@@ -68,9 +73,9 @@ export default function LoginForm() {
     return (
         <Card className="mx-auto max-w-sm">
             <CardHeader>
-                <CardTitle className="text-2xl">Login</CardTitle>
+                <CardTitle className="text-2xl">{login.title}</CardTitle>
                 <CardDescription>
-                    Enter your email below to login to your account
+                    {login.description}
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -81,9 +86,9 @@ export default function LoginForm() {
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Email</FormLabel>
+                                    <FormLabel>{login.email}</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Enter your email" {...field} />
+                                        <Input placeholder={login.emailPlaceholder} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -95,27 +100,50 @@ export default function LoginForm() {
                             render={({ field }) => (
                                 <FormItem>
                                     <div className="flex items-center">
-                                        <FormLabel>Password</FormLabel>
-                                        <Link href="/forgot-password" className="ml-auto inline-block text-sm underline">
-                                            Forgot your password?
+                                        <FormLabel>{login.password}</FormLabel>
+                                        <Link href={"/forgot-password"} className="ml-auto inline-block text-sm underline">
+                                            {login.forgotPassword}
                                         </Link>
                                     </div>
                                     <FormControl>
-                                        <PasswordInput placeholder="Enter your password" {...field} />
+                                        <PasswordInput placeholder={login.passwordPlaceholder} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
+                        <FormField
+                            control={form.control}
+                            name="rememberMe"
+                            render={({ field }) => (
+                                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                    <FormControl>
+                                        <Checkbox
+                                            checked={field.value}
+                                            onCheckedChange={field.onChange}
+                                        />
+                                    </FormControl>
+                                    <div className="space-y-1 leading-none">
+                                        <FormLabel>
+                                            Remember me
+                                        </FormLabel>
+                                    </div>
+                                </FormItem>
+                            )}
+                        />
                         <Button type="submit" className="w-full" disabled={isLoading}>
-                            {isLoading ? 'Logging in...' : 'Log in'}
+                            {isLoading ? (
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                                login.loginButton
+                            )}
                         </Button>
                     </form>
                 </Form>
                 <div className="mt-4 text-center text-sm">
-                    Don&apos;t have an account?{" "}
-                    <Link href="/signup" className="underline">
-                        Sign up
+                    {login.noAccount}{' '}
+                    <Link href={"/signup"} className="underline">
+                        {login.signUp}
                     </Link>
                 </div>
             </CardContent>
