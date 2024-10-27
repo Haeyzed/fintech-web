@@ -1,9 +1,10 @@
+// api-client.ts
 import { getCookie } from 'cookies-next';
 import { ErrorResponse } from '@/types/auth';
 import Env from "@/lib/env";
 
-export const API_VERSION = 'v1'
-export const API_URL = `${Env.API_URL}/api/${API_VERSION}`
+export const API_VERSION = 'v1';
+export const API_URL = `${Env.API_URL}/api/${API_VERSION}`;
 export const API_BASE_URL = API_URL || 'https://fintech.softmaxtech.com.ng/api/v1';
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
@@ -15,22 +16,23 @@ interface RequestOptions<T> extends Omit<RequestInit, 'method' | 'body'> {
     token?: string;
 }
 
-export interface ApiResponse<T> {
+// Update the ApiResponse type to be more flexible
+export interface ApiResponse<T = unknown> {
     success: boolean;
-    data: T[];
+    data: T;
+    message?: string;
     meta: {
         per_page: number;
         last_page: number;
         current_page: number;
         total: number;
     };
-    message?: string;
     errors?: Record<string, string[]>;
 }
 
 async function client<TResponse, TRequest extends Record<string, unknown> = Record<string, unknown>>(
-    endpoint: string,
-    { params, token, ...customConfig }: RequestOptions<TRequest> = {}
+  endpoint: string,
+  { params, token, ...customConfig }: RequestOptions<TRequest> = {}
 ): Promise<ApiResponse<TResponse>> {
     const headers: HeadersInit = new Headers();
     const locale = getCookie('NEXT_LOCALE') as string | undefined;

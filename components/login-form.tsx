@@ -1,74 +1,74 @@
 'use client'
 
-import {useRouter} from 'next/navigation'
-import {zodResolver} from '@hookform/resolvers/zod'
-import {useForm} from 'react-hook-form'
+import { useRouter } from 'next/navigation'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
 import * as z from 'zod'
-import {signIn} from 'next-auth/react'
-import {Button} from '@/components/ui/button'
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/components/ui/form'
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
-import {Input} from '@/components/ui/input'
-import {PasswordInput} from "@/components/password-input"
-import {toast} from "sonner"
+import { signIn } from 'next-auth/react'
+import { Button } from '@/components/ui/button'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from '@/components/ui/input'
+import { PasswordInput } from "@/components/password-input"
+import { toast } from "sonner"
 import Link from "next/link"
-import {useApi} from '@/hooks/use-api'
-import {ErrorResponse} from '@/types/auth'
-import {Loader2} from "lucide-react";
-import {useDictionary} from "@/app/[lang]/providers";
-import {Checkbox} from "@/components/ui/checkbox"
+import { useApi } from '@/hooks/use-api'
+import { ErrorResponse } from '@/types/auth'
+import { Loader2 } from "lucide-react";
+import { useDictionary } from "@/app/[lang]/providers";
+import { Checkbox } from "@/components/ui/checkbox"
+import { useApiErrorHandler } from '@/hooks/use-api-error'
 
 export default function LoginForm() {
-    const router = useRouter()
-    const { login, formValidation } = useDictionary()
-    const formSchema = z.object({
-        email: z.string().email({
-            message: formValidation.emailRequired
-        }),
-        password: z.string().min(8, {
-            message: formValidation.passwordMinLength
-        }),
-        rememberMe: z.boolean().default(false)
-    })
+  const router = useRouter()
+  const { login, formValidation } = useDictionary()
+  const { handleApiError } = useApiErrorHandler()
+  const formSchema = z.object({
+    email: z.string().email({
+      message: formValidation.emailRequired
+    }),
+    password: z.string().min(8, {
+      message: formValidation.passwordMinLength
+    }),
+    rememberMe: z.boolean().default(false)
+  })
 
-    type FormValues = z.infer<typeof formSchema>
+  type FormValues = z.infer<typeof formSchema>
 
-    const { post, isLoading } = useApi<void, FormValues>('/auth/login')
+  const { post, isLoading } = useApi();
 
-    const form = useForm<FormValues>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            email: '',
-            password: '',
-        },
-    })
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+      rememberMe: false,
+    },
+  })
 
-    async function onSubmit(values: FormValues) {
-        try {
-            const response = await post(values)
-            const result = await signIn('credentials', {
-                redirect: false,
-                email: values.email,
-                password: values.password,
-            })
+  async function onSubmit(values: FormValues) {
+    try {
+      const response = await post('/auth/login', values)
+      const result = await signIn('credentials', {
+        redirect: false,
+        email: values.email,
+        password: values.password,
+      })
 
-            if (result?.error) {
-                throw new Error(result.error)
-            }
+      if (result?.error) {
+        throw new Error(result.error)
+      }
 
-            if (result?.ok) {
-                router.push('/dashboard')
-            }
-            toast.success('Success', {
-                description: response.message || 'Login successful.',
-            })
-        } catch (error) {
-            const errorResponse = error as ErrorResponse
-            toast.error('Error', {
-                description: errorResponse.message || 'An error occurred during login.',
-            })
-        }
+      if (result?.ok) {
+        router.push('/dashboard')
+      }
+      toast.success('Success', {
+        description: response.message || 'Login successful.',
+      })
+    } catch (error) {
+      handleApiError(error)
     }
+  }
 
     return (
         <Card className="mx-auto max-w-sm">

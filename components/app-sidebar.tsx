@@ -32,17 +32,7 @@ export const data = {
       name: "Simbrella",
       logo: GalleryVerticalEnd,
       plan: "Simbrella",
-    },
-    // {
-    //   name: "Acme Corp.",
-    //   logo: AudioWaveform,
-    //   plan: "Startup",
-    // },
-    // {
-    //   name: "Evil Corp.",
-    //   logo: Command,
-    //   plan: "Free",
-    // },
+    }
   ],
   navMain: [
     {
@@ -51,24 +41,14 @@ export const data = {
       icon: LayoutDashboard,
     },
     {
-      title: "Companies",
-      url: "/companies",
+      title: "Transactions",
+      url: "/transactions",
       icon: Store,
     },
     {
       title: "Users",
       url: "/users",
       icon: Users,
-    },
-    {
-      title: "OAuth Clients",
-      url: "/oauth-clients",
-      icon: Key,
-    },
-    {
-      title: "Access Logs",
-      url: "/access-logs",
-      icon: FileBarChart,
     },
     {
       title: "Settings",

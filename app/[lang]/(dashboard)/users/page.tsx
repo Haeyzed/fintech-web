@@ -84,12 +84,12 @@ export default function UsersPage() {
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
             <div className="min-h-[100vh] flex-1 rounded-xl md:min-h-min">
                 <h1 className="text-2xl font-bold mb-4">Users</h1>
-                <AdvancedTable<User>
-                    columns={columns}
-                    endpoint="/users"
-                    itemActions={itemActions}
-                    fallbackSortColumn="created_at"
-                    fallbackSortDirection="desc"/>
+                {/*<AdvancedTable<User>*/}
+                {/*    columns={columns}*/}
+                {/*    endpoint="/users"*/}
+                {/*    itemActions={itemActions}*/}
+                {/*    fallbackSortColumn="created_at"*/}
+                {/*    fallbackSortDirection="desc"/>*/}
             </div>
         </div>
     )

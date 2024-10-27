@@ -6,38 +6,40 @@ import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { PasswordInput } from "@/components/password-input"
-import { toast } from "sonner"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { PasswordInput } from '@/components/password-input'
+import { toast } from 'sonner'
 import { useApi } from '@/hooks/use-api'
-import { AuthResponse, ErrorResponse } from '@/types/auth'
+import { ErrorResponse } from '@/types/auth'
+import { Loader2 } from 'lucide-react'
+import { useDictionary } from '@/app/[lang]/providers'
 
-const formSchema = z.object({
-    password: z.string().min(8, {
-        message: 'Password must be at least 8 characters long.',
-    }),
-    password_confirmation: z.string().min(8, {
-        message: 'Password must be at least 8 characters long.',
-    }),
-}).refine((data) => data.password === data.password_confirmation, {
-    message: "Passwords don't match",
-    path: ["password_confirmation"],
-});
-
-type ResetPasswordFormValues = z.infer<typeof formSchema> & {
-    email: string;
-    token: string;
-};
 
 export function ResetPasswordForm() {
     const router = useRouter()
-    const { post, isLoading } = useApi<AuthResponse, ResetPasswordFormValues>('/auth/reset-password')
+    const { resetPassword, formValidation } = useDictionary()
+    const { post, isLoading } = useApi()
     const searchParams = useSearchParams()
 
     const token = searchParams.get('token')
     const email = searchParams.get('email')
 
-    const form = useForm<ResetPasswordFormValues>({
+    const formSchema = z.object({
+        password: z.string().min(8, {
+            message: formValidation.passwordMinLength,
+        }),
+        password_confirmation: z.string(),
+    }).refine((data) => data.password === data.password_confirmation, {
+        message: formValidation.passwordMismatch,
+        path: ["password_confirmation"],
+    })
+
+    type FormValues = z.infer<typeof formSchema> & {
+        email: string;
+        token: string;
+    };
+
+    const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             password: '',
@@ -47,14 +49,14 @@ export function ResetPasswordForm() {
         },
     })
 
-    async function onSubmit(values: ResetPasswordFormValues) {
+    async function onSubmit(values: FormValues) {
         if (!values.token || !values.email) {
             toast.error('Error', { description: 'Invalid Link' })
             return
         }
 
         try {
-            const response = await post(values)
+            const response = await post('/auth/reset-password', values)
             toast.success('Success', {
                 description: response.message || 'Password reset successful.',
             })
@@ -67,49 +69,65 @@ export function ResetPasswordForm() {
         }
     }
 
+    if (!token || !email) {
+        return (
+          <Card className="w-full max-w-sm">
+              <CardContent className="pt-6">
+                  <p className="text-center text-sm text-red-600">{resetPassword.invalidLink}</p>
+              </CardContent>
+          </Card>
+        )
+    }
+
     return (
-        <Card className="mx-auto max-w-sm">
-            <CardHeader>
-                <CardTitle className="text-2xl">Reset Password</CardTitle>
-                <CardDescription>
-                    Enter your new password below
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                        <FormField
-                            control={form.control}
-                            name="password"
-                            render={({field}) => (
-                                <FormItem>
-                                    <FormLabel>New Password</FormLabel>
-                                    <FormControl>
-                                        <PasswordInput placeholder="Enter your new password" {...field} />
-                                    </FormControl>
-                                    <FormMessage/>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="password_confirmation"
-                            render={({field}) => (
-                                <FormItem>
-                                    <FormLabel>Confirm New Password</FormLabel>
-                                    <FormControl>
-                                        <PasswordInput placeholder="Confirm your new password" {...field} />
-                                    </FormControl>
-                                    <FormMessage/>
-                                </FormItem>
-                            )}
-                        />
-                        <Button type="submit" className="w-full" disabled={isLoading}>
-                            {isLoading ? 'Resetting Password...' : 'Reset Password'}
-                        </Button>
-                    </form>
-                </Form>
-            </CardContent>
-        </Card>
+      <Card className="mx-auto max-w-sm">
+          <CardHeader>
+              <CardTitle className="text-2xl">{resetPassword.title}</CardTitle>
+              <CardDescription>
+                  {resetPassword.description}
+              </CardDescription>
+          </CardHeader>
+          <CardContent>
+              <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                      <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                          <FormItem>
+                              <FormLabel>{resetPassword.newPassword}</FormLabel>
+                              <FormControl>
+                                  <PasswordInput placeholder={resetPassword.newPasswordPlaceholder} {...field} />
+                              </FormControl>
+                              <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="password_confirmation"
+                        render={({ field }) => (
+                          <FormItem>
+                              <FormLabel>{resetPassword.confirmPassword}</FormLabel>
+                              <FormControl>
+                                  <PasswordInput placeholder={resetPassword.confirmPasswordPlaceholder} {...field} />
+                              </FormControl>
+                              <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <Button type="submit" className="w-full" disabled={isLoading}>
+                          {isLoading ? (
+                            <>
+                                <Loader2 className='h-4 w-4 animate-spin' />
+                            </>
+                          ) : (
+                            resetPassword.submitButton
+                          )}
+                      </Button>
+                  </form>
+              </Form>
+          </CardContent>
+      </Card>
     )
 }

@@ -5,72 +5,70 @@ import { ErrorResponse } from '@/types/auth';
 
 type ApiMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
-interface ApiHook<TResponse, TRequest = TResponse> {
-    data: ApiResponse<TResponse> | null;
+interface ApiHook {
+    data: ApiResponse | null; // Replaces any with unknown for flexibility
     error: ErrorResponse | null;
     isLoading: boolean;
-    get: (params?: Record<string, string>) => Promise<ApiResponse<TResponse>>;
-    post: (body: TRequest | FormData, params?: Record<string, string>) => Promise<ApiResponse<TResponse>>;
-    put: (body: TRequest | FormData, params?: Record<string, string>) => Promise<ApiResponse<TResponse>>;
-    patch: (body: TRequest | FormData, params?: Record<string, string>) => Promise<ApiResponse<TResponse>>;
-    del: (params?: Record<string, string>) => Promise<ApiResponse<TResponse>>;
+    get: <TResponse>(endpoint: string, params?: Record<string, string>) => Promise<ApiResponse<TResponse>>;
+    post: <TResponse, TRequest extends Record<string, unknown> = Record<string, unknown>>(
+      endpoint: string,
+      body?: TRequest | FormData,
+      params?: Record<string, string>
+    ) => Promise<ApiResponse<TResponse>>;
+    put: <TResponse, TRequest extends Record<string, unknown> = Record<string, unknown>>(
+      endpoint: string,
+      body: TRequest | FormData,
+      params?: Record<string, string>
+    ) => Promise<ApiResponse<TResponse>>;
+    patch: <TResponse, TRequest extends Record<string, unknown> = Record<string, unknown>>(
+      endpoint: string,
+      body: TRequest | FormData,
+      params?: Record<string, string>
+    ) => Promise<ApiResponse<TResponse>>;
+    del: <TResponse>(endpoint: string, params?: Record<string, string>) => Promise<ApiResponse<TResponse>>;
 }
 
-export function useApi<TResponse, TRequest extends Record<string, unknown> = Record<string, unknown>>(endpoint: string): ApiHook<TResponse, TRequest> {
-    const [data, setData] = useState<ApiResponse<TResponse> | null>(null);
+export function useApi(): ApiHook {
+    const [data, setData] = useState<ApiResponse | null>(null); // Replaces any with unknown
     const [error, setError] = useState<ErrorResponse | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const { data: session } = useSession();
 
     const execute = useCallback(
-        async (method: ApiMethod, body?: TRequest | FormData, params?: Record<string, string>) => {
-            setIsLoading(true);
-            setError(null);
+      async <TResponse, TRequest extends Record<string, unknown> = Record<string, unknown>>(
+        method: ApiMethod,
+        endpoint: string,
+        body?: TRequest | FormData,
+        params?: Record<string, string>
+      ): Promise<ApiResponse<TResponse>> => {
+          setIsLoading(true);
+          setError(null);
 
-            try {
-                const result = await client<TResponse, TRequest>(endpoint, {
-                    method,
-                    body,
-                    params,
-                    token: session?.user?.token,
-                });
-                setData(result);
-                return result;
-            } catch (err) {
-                const errorResponse = err as ErrorResponse;
-                setError(errorResponse);
-                throw errorResponse;
-            } finally {
-                setIsLoading(false);
-            }
-        },
-        [endpoint, session]
+          try {
+              const result = await client<TResponse, TRequest>(endpoint, {
+                  method,
+                  body,
+                  params,
+                  token: session?.user?.token,
+              });
+              setData(result);
+              return result;
+          } catch (err) {
+              const errorResponse = err as ErrorResponse;
+              setError(errorResponse);
+              throw errorResponse;
+          } finally {
+              setIsLoading(false);
+          }
+      },
+      [session]
     );
 
-    const get = useCallback(
-        (params?: Record<string, string>) => execute('GET', undefined, params),
-        [execute]
-    );
-
-    const post = useCallback(
-        (body: TRequest | FormData, params?: Record<string, string>) => execute('POST', body, params),
-        [execute]
-    );
-
-    const put = useCallback(
-        (body: TRequest | FormData, params?: Record<string, string>) => execute('PUT', body, params),
-        [execute]
-    );
-
-    const patch = useCallback(
-        (body: TRequest | FormData, params?: Record<string, string>) => execute('PATCH', body, params),
-        [execute]
-    );
-
-    const del = useCallback(
-        (params?: Record<string, string>) => execute('DELETE', undefined, params),
-        [execute]
-    );
+    const get = useCallback(<TResponse>(endpoint: string, params?: Record<string, string>) => execute<TResponse>('GET', endpoint, undefined, params), [execute]);
+    const post = useCallback(<TResponse, TRequest extends Record<string, unknown> = Record<string, unknown>>(endpoint: string, body?: TRequest | FormData, params?: Record<string, string>) => execute<TResponse, TRequest>('POST', endpoint, body, params), [execute]);
+    const put = useCallback(<TResponse, TRequest extends Record<string, unknown> = Record<string, unknown>>(endpoint: string, body: TRequest | FormData, params?: Record<string, string>) => execute<TResponse, TRequest>('PUT', endpoint, body, params), [execute]);
+    const patch = useCallback(<TResponse, TRequest extends Record<string, unknown> = Record<string, unknown>>(endpoint: string, body: TRequest | FormData, params?: Record<string, string>) => execute<TResponse, TRequest>('PATCH', endpoint, body, params), [execute]);
+    const del = useCallback(<TResponse>(endpoint: string, params?: Record<string, string>) => execute<TResponse>('DELETE', endpoint, undefined, params), [execute]);
 
     return { data, error, isLoading, get, post, put, patch, del };
 }

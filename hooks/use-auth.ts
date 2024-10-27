@@ -13,7 +13,7 @@ export function useAuth() {
     const { data: session, status } = useSession()
     const router = useRouter()
     const pathname = usePathname()
-    const { post } = useApi<void>('/auth/logout')
+    const { post } = useApi()
 
     useEffect(() => {
         if (status === "unauthenticated" && !publicAuthPaths.includes(pathname)) {
@@ -30,6 +30,7 @@ export function useAuth() {
         username: "",
         phone: "",
         profile_image: "",
+        balance: "",
         email_verified_at: null,
         device_token: null,
         last_login_at: null,
@@ -48,7 +49,7 @@ export function useAuth() {
 
     const logout = async () => {
         try {
-            const response = await post({})
+            const response = await post('/auth/logout',{})
             await signOut({ redirect: false })
             toast.success('Success', {
                 description: response.message || 'Logged out successful.',
