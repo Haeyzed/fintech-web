@@ -16,7 +16,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Switch } from '@/components/ui/switch'
-import { useDebounce } from '@/hooks/use-debounce'
 import { Label } from '@/components/ui/label'
 import { DateRangePicker } from '@/components/date-range-picker'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
@@ -71,8 +70,13 @@ interface AdvancedTableProps<T> {
 }
 
 // Helper function to get nested property value
-const getNestedValue = <T,>(obj: T, path: string): any => {
-  return path.split('.').reduce((acc: any, part: string) => acc && acc[part], obj)
+const getNestedValue = <T,>(obj: T, path: string): unknown => {
+  return path.split('.').reduce((acc: unknown, part: string) => {
+    if (acc && typeof acc === 'object' && part in acc) {
+      return (acc as Record<string, unknown>)[part];
+    }
+    return undefined;
+  }, obj);
 }
 
 export function AdvancedTable<T extends { id: string | number }>({
@@ -109,8 +113,6 @@ export function AdvancedTable<T extends { id: string | number }>({
     new Set(columns.map(col => col.key))
   )
 
-  const debouncedSearch = useDebounce(tableState.search, 300)
-
   const updateTableState = useCallback((newState: Partial<TableState<T>>) => {
     setTableState(prevState => {
       const updatedState = {...prevState, ...newState}
@@ -129,7 +131,7 @@ export function AdvancedTable<T extends { id: string | number }>({
 
   const handleSelectAll = useCallback(
     (checked: boolean) => {
-      const newSelectedItems = checked ? (data?.map(item => (item.id as string)) || []) : []
+      const newSelectedItems = checked ? (data?.map(item => String(item.id)) || []) : []
       setSelectedItems(newSelectedItems)
       onSelectionChange?.(newSelectedItems)
     },

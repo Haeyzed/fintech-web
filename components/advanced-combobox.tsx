@@ -14,18 +14,26 @@ interface Item {
   label: string
 }
 
+interface FetchItemsResponse {
+  data: unknown[]
+  meta: {
+    current_page: number
+    last_page: number
+  }
+}
+
 interface AdvancedComboboxProps {
   placeholder: string
   multiple?: boolean
   onChange: (value: string | string[]) => void
   value: string | string[]
-  mapOption?: (item: any) => Item
+  mapOption: (item: unknown) => Item
   className?: string
   initialSelectedItem?: Item
   initialSelectedItems?: Item[]
   disabled?: boolean
   error?: string
-  fetchItems: (search: string, page: number) => Promise<{ data: any[], meta: { current_page: number, last_page: number } }>
+  fetchItems: (search: string, page: number) => Promise<FetchItemsResponse>
   debounceTime?: number
 }
 
@@ -34,7 +42,7 @@ export function AdvancedCombobox({
                                    multiple = false,
                                    onChange,
                                    value,
-                                   mapOption = (item) => item,
+                                   mapOption,
                                    className,
                                    initialSelectedItem,
                                    initialSelectedItems = [],
