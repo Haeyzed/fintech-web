@@ -8,18 +8,11 @@ import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useDebounce } from '@/hooks/use-debounce'
 import { useApiErrorHandler } from '@/hooks/use-api-error'
+import { ApiResponse } from '@/lib/api-client'
 
 interface Item {
   value: string
   label: string
-}
-
-interface FetchItemsResponse {
-  data: unknown[]
-  meta: {
-    current_page: number
-    last_page: number
-  }
 }
 
 interface AdvancedComboboxProps {
@@ -33,7 +26,7 @@ interface AdvancedComboboxProps {
   initialSelectedItems?: Item[]
   disabled?: boolean
   error?: string
-  fetchItems: (search: string, page: number) => Promise<FetchItemsResponse>
+  fetchItems: (search: string, page: number) => Promise<ApiResponse>
   debounceTime?: number
 }
 
