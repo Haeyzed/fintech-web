@@ -111,7 +111,7 @@ export default function PaymentForm({ onSubmit, initialData }: PaymentFormProps)
               Submitting...
             </>
           ) : (
-            'Submit Transaction'
+            'Deposit'
           )}
         </Button>
       </form>

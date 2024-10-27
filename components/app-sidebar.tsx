@@ -1,11 +1,9 @@
-"use client"
+'use client'
 
-import * as React from "react"
+import * as React from 'react'
 import {
-  FileBarChart,
   Frame,
   GalleryVerticalEnd,
-  Key,
   LayoutDashboard,
   LifeBuoy,
   Map,
@@ -13,17 +11,17 @@ import {
   Send,
   Settings2,
   Store,
-  Users,
-} from "lucide-react"
+  Users
+} from 'lucide-react'
 
-import {NavMain} from "@/components/nav-main"
-import {NavUser} from "@/components/nav-user"
-import {TeamSwitcher} from "@/components/team-switcher"
-import {Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail,} from "@/components/ui/sidebar"
-import {NavSecondary} from "@/components/nav-secondary"
-import {useAuth} from "@/hooks/use-auth"
-import {Skeleton} from "@/components/ui/skeleton"
-import {SearchForm} from "@/components/search-form"
+import { NavMain } from '@/components/nav-main'
+import { NavUser } from '@/components/nav-user'
+import { TeamSwitcher } from '@/components/team-switcher'
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar'
+import { NavSecondary } from '@/components/nav-secondary'
+import { useAuth } from '@/hooks/use-auth'
+import { Skeleton } from '@/components/ui/skeleton'
+import { SearchForm } from '@/components/search-form'
 
 // This is sample data.
 export const data = {

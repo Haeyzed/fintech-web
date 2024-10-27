@@ -117,7 +117,7 @@ export default function TransactionsPage() {
     }
   }, [get, handleApiError])
 
-  const verifyTransaction = async (transaction: Transaction) => {
+  const verifyTransaction = useCallback(async (transaction: Transaction) => {
     if (transaction.status !== 'initiated' && transaction.status !== 'pending') {
       toast.error('Error', {
         description: 'This transaction cannot be verified.'
@@ -141,7 +141,7 @@ export default function TransactionsPage() {
         description: response.message || 'Transaction verified successfully.'
       })
       // Refresh the transactions list after verification
-      fetchTransactions({
+      await fetchTransactions({
         page: 1,
         perPage: 10,
         search: '',
@@ -153,7 +153,8 @@ export default function TransactionsPage() {
     } catch (error) {
       handleApiError(error)
     }
-  }
+  }, [post, fetchTransactions, handleApiError])
+
 
   const itemActions = useCallback(
     (item: Transaction) => {
@@ -163,7 +164,7 @@ export default function TransactionsPage() {
       }
 
       const handleVerify = () => {
-        verifyTransaction(item)
+        verifyTransaction(item).then(r => console.log(r))
       }
 
       const handleDelete = () => {
@@ -200,10 +201,10 @@ export default function TransactionsPage() {
         />
       )
     },
-    [del, verifyTransaction]
+    [del, handleApiError, verifyTransaction]
   )
 
-  const handleCreate = async (data: FormValues) => {
+  const handlePaystackDeposit = async (data: FormValues) => {
     try {
       const response = await post<{ paystack: { authorization_url: string } }>('/paystack/payment/initialize', data)
       if (response.success && response.data.paystack.authorization_url) {
@@ -219,7 +220,7 @@ export default function TransactionsPage() {
       }
       setIsCreateDrawerOpen(false)
       // Refresh the transactions list
-      fetchTransactions({
+      await fetchTransactions({
         page: 1,
         perPage: 10,
         search: '',
@@ -299,6 +300,12 @@ export default function TransactionsPage() {
                   Deposit
                 </Button>
               </div>
+              <div className="flex space-x-2">
+                <Button onClick={() => setIsCreateDrawerOpen(true)}>
+                  <DollarSign className="mr-2 h-4 w-4" />
+                  Withdraw
+                </Button>
+              </div>
               {!isTrashed && selectedIds.length > 0 && (
                 <Button variant="destructive" onClick={handleBulkDelete}>Delete Selected</Button>
               )}
@@ -319,11 +326,11 @@ export default function TransactionsPage() {
         <ResponsiveDrawer
           open={isCreateDrawerOpen}
           onOpenChange={setIsCreateDrawerOpen}
-          title="Create Transaction"
-          description="Fill in the details to create a new transaction."
+          title="Deposit"
+          description="Fill in the details to deposit."
           className="sm:max-w-[425px] bg-card"
         >
-          <PaymentForm onSubmit={handleCreate} />
+          <PaymentForm onSubmit={handlePaystackDeposit} />
         </ResponsiveDrawer>
         <ResponsiveDrawer
           open={isViewDrawerOpen}
