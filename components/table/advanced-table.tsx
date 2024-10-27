@@ -70,13 +70,13 @@ interface AdvancedTableProps<T> {
 }
 
 // Helper function to get nested property value
-const getNestedValue = <T,>(obj: T, path: string): unknown => {
+const getNestedValue = <T, >(obj: T, path: string): unknown => {
   return path.split('.').reduce((acc: unknown, part: string) => {
     if (acc && typeof acc === 'object' && part in acc) {
-      return (acc as Record<string, unknown>)[part];
+      return (acc as Record<string, unknown>)[part]
     }
-    return undefined;
-  }, obj);
+    return undefined
+  }, obj)
 }
 
 export function AdvancedTable<T extends { id: string | number }>({
@@ -97,7 +97,7 @@ export function AdvancedTable<T extends { id: string | number }>({
                                                                    enableColumnVisibility = true,
                                                                    enableDateRange = true,
                                                                    enablePerPage = true,
-                                                                   enableSort = true,
+                                                                   enableSort = true
                                                                  }: AdvancedTableProps<T>) {
   const [tableState, setTableState] = useState<TableState<T>>({
     search: '',
@@ -106,7 +106,7 @@ export function AdvancedTable<T extends { id: string | number }>({
     sortColumn: fallbackSortColumn || null,
     sortDirection: fallbackSortDirection,
     isTrashed: false,
-    dateRange: {startDate: '', endDate: ''}
+    dateRange: { startDate: '', endDate: '' }
   })
   const [selectedItems, setSelectedItems] = useState<string[]>([])
   const [visibleColumns, setVisibleColumns] = useState<Set<NestedKeyOf<T>>>(
@@ -115,7 +115,7 @@ export function AdvancedTable<T extends { id: string | number }>({
 
   const updateTableState = useCallback((newState: Partial<TableState<T>>) => {
     setTableState(prevState => {
-      const updatedState = {...prevState, ...newState}
+      const updatedState = { ...prevState, ...newState }
       if (onSearchChange && 'search' in newState) {
         onSearchChange(updatedState.search)
       }
@@ -166,7 +166,7 @@ export function AdvancedTable<T extends { id: string | number }>({
   const handleDateRangeChange = useCallback(
     (startDate: string, endDate: string) => {
       updateTableState({
-        dateRange: {startDate, endDate},
+        dateRange: { startDate, endDate },
         page: 1
       })
     },
@@ -175,7 +175,7 @@ export function AdvancedTable<T extends { id: string | number }>({
 
   const handleTrashSwitch = useCallback(
     (checked: boolean) => {
-      updateTableState({isTrashed: checked, page: 1})
+      updateTableState({ isTrashed: checked, page: 1 })
       onTrashSwitchChange?.(checked)
     },
     [updateTableState, onTrashSwitchChange]
@@ -184,7 +184,7 @@ export function AdvancedTable<T extends { id: string | number }>({
   const handleSort = (column: NestedKeyOf<T>) => {
     if (!enableSort) return
     updateTableState({
-      sortColumn: column,
+      sortColumn: column as NestedKeyOf<T> | null,
       sortDirection:
         tableState.sortColumn === column && tableState.sortDirection === 'asc'
           ? 'desc'
@@ -195,19 +195,19 @@ export function AdvancedTable<T extends { id: string | number }>({
 
   const getSortIcon = (column: NestedKeyOf<T>) => {
     if (column !== tableState.sortColumn)
-      return <CaretSortIcon className='ml-2 h-4 w-4' aria-hidden='true'/>
+      return <CaretSortIcon className="ml-2 h-4 w-4" aria-hidden="true" />
     if (tableState.sortDirection === 'asc')
-      return <ArrowUpIcon className='ml-2 h-4 w-4' aria-hidden='true'/>
+      return <ArrowUpIcon className="ml-2 h-4 w-4" aria-hidden="true" />
     if (tableState.sortDirection === 'desc')
-      return <ArrowDownIcon className='ml-2 h-4 w-4' aria-hidden='true'/>
-    return <CaretSortIcon className='ml-2 h-4 w-4' aria-hidden='true'/>
+      return <ArrowDownIcon className="ml-2 h-4 w-4" aria-hidden="true" />
+    return <CaretSortIcon className="ml-2 h-4 w-4" aria-hidden="true" />
   }
 
   const TableSkeleton = () => (
     <TableRow>
       {[...Array(columns.length + 2)].map((_, index) => (
         <TableCell key={index}>
-          <Skeleton className='h-6 w-full rounded-lg bg-secondary'/>
+          <Skeleton className="h-6 w-full rounded-lg bg-secondary" />
         </TableCell>
       ))}
     </TableRow>
@@ -215,51 +215,51 @@ export function AdvancedTable<T extends { id: string | number }>({
 
   const NoResultsMessage = () => (
     <TableRow>
-      <TableCell colSpan={columns.length + 2} className='h-24 text-center'>
+      <TableCell colSpan={columns.length + 2} className="h-24 text-center">
         No results found.
       </TableCell>
     </TableRow>
   )
 
   const handlePerPageChange = (perPage: number) => {
-    updateTableState({perPage, page: 1})
+    updateTableState({ perPage, page: 1 })
   }
 
   return (
     <div className="w-full space-y-2.5">
-      <div className='flex flex-wrap items-center justify-between gap-4'>
-        <div className='flex flex-wrap items-center gap-2'>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center gap-2">
           {customButtons}
         </div>
         {enableDateRange && (
           <DateRangePicker
             onDateRangeChange={handleDateRangeChange}
-            size='sm'
-            className='h-9 bg-card shadow-sm'
+            size="sm"
+            className="h-9 bg-card shadow-sm"
           />
         )}
       </div>
-      <div className='flex flex-wrap items-center justify-between gap-4'>
+      <div className="flex flex-wrap items-center justify-between gap-4">
         {enableSearch && (
           <div className="flex-1 min-w-[200px]">
             <Input
-              type='search'
-              placeholder='Search...'
+              type="search"
+              placeholder="Search..."
               value={tableState.search}
-              onChange={e => updateTableState({search: e.target.value, page: 1})}
-              className='h-9 bg-card shadow-sm'
+              onChange={e => updateTableState({ search: e.target.value, page: 1 })}
+              className="h-9 bg-card shadow-sm"
             />
           </div>
         )}
-        <div className='flex flex-wrap items-center gap-4'>
+        <div className="flex flex-wrap items-center gap-4">
           {enableTrash && (
-            <div className='flex items-center space-x-2'>
+            <div className="flex items-center space-x-2">
               <Switch
-                id='isTrashed'
+                id="isTrashed"
                 checked={tableState.isTrashed}
                 onCheckedChange={handleTrashSwitch}
               />
-              <Label htmlFor='isTrashed'>Trashed</Label>
+              <Label htmlFor="isTrashed">Trashed</Label>
             </div>
           )}
         </div>
@@ -272,13 +272,13 @@ export function AdvancedTable<T extends { id: string | number }>({
                 size="sm"
                 className="ml-auto hidden h-8 lg:flex bg-card"
               >
-                <MixerHorizontalIcon className="mr-2 size-4"/>
+                <MixerHorizontalIcon className="mr-2 size-4" />
                 View
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-40">
               <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
-              <DropdownMenuSeparator/>
+              <DropdownMenuSeparator />
               {columns.map(column => (
                 <DropdownMenuCheckboxItem
                   key={column.key as string}
@@ -298,7 +298,7 @@ export function AdvancedTable<T extends { id: string | number }>({
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className='w-[50px]'>
+                <TableHead className="w-[50px]">
                   <Checkbox
                     checked={selectedItems.length === data?.length && data?.length > 0}
                     onCheckedChange={(checked) => handleSelectAll(checked as boolean)}
@@ -311,9 +311,9 @@ export function AdvancedTable<T extends { id: string | number }>({
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button
-                            variant='ghost'
-                            size='sm'
-                            className='-ml-3 h-8 data-[state=open]:bg-accent'
+                            variant="ghost"
+                            size="sm"
+                            className="-ml-3 h-8 data-[state=open]:bg-accent"
                           >
                             <span>{column.label}</span>
                             {getSortIcon(column.key)}
@@ -322,19 +322,19 @@ export function AdvancedTable<T extends { id: string | number }>({
                         <DropdownMenuContent align="start">
                           <DropdownMenuItem onClick={() => handleSort(column.key)}>
                             <ArrowUpIcon
-                              className='mr-2 h-3.5 w-3.5 text-muted-foreground/70'/>
+                              className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
                             Asc
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleSort(column.key)}>
                             <ArrowDownIcon
-                              className='mr-2 h-3.5 w-3.5 text-muted-foreground/70'/>
+                              className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
                             Desc
                           </DropdownMenuItem>
                           {enableColumnVisibility && (
                             <DropdownMenuItem
                               onClick={() => toggleColumnVisibility(column.key)}>
                               <EyeNoneIcon
-                                className='mr-2 h-3.5 w-3.5 text-muted-foreground/70'/>
+                                className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
                               Hide
                             </DropdownMenuItem>
                           )}
@@ -350,7 +350,7 @@ export function AdvancedTable<T extends { id: string | number }>({
             </TableHeader>
             <TableBody>
               {isLoading ? (
-                [...Array(5)].map((_, index) => <TableSkeleton key={index}/>)
+                [...Array(5)].map((_, index) => <TableSkeleton key={index} />)
               ) : data && data.length > 0 ? (
                 data.map((item) => (
                   <TableRow
@@ -378,12 +378,12 @@ export function AdvancedTable<T extends { id: string | number }>({
                   </TableRow>
                 ))
               ) : (
-                <NoResultsMessage/>
+                <NoResultsMessage />
               )}
 
             </TableBody>
           </Table>
-          <ScrollBar orientation="horizontal"/>
+          <ScrollBar orientation="horizontal" />
         </ScrollArea>
       </div>
       <div className="flex flex-col gap-2.5">
@@ -394,16 +394,16 @@ export function AdvancedTable<T extends { id: string | number }>({
           </div>
           <div className="flex flex-col-reverse items-center gap-4 sm:flex-row sm:gap-6 lg:gap-8">
             {enablePerPage && (
-              <div className='flex items-center  space-x-2'>
-                <p className='whitespace-nowrap text-sm font-medium'>
+              <div className="flex items-center  space-x-2">
+                <p className="whitespace-nowrap text-sm font-medium">
                   Rows per page
                 </p>
                 <Select
                   value={tableState.perPage.toString()}
                   onValueChange={(value) => handlePerPageChange(Number(value))}
                 >
-                  <SelectTrigger className='h-8 w-[70px] bg-card'>
-                    <SelectValue placeholder={tableState.perPage.toString()}/>
+                  <SelectTrigger className="h-8 w-[70px] bg-card">
+                    <SelectValue placeholder={tableState.perPage.toString()} />
                   </SelectTrigger>
                   <SelectContent>
                     {[5, 10, 20, 25, 50].map((value) => (
@@ -421,40 +421,40 @@ export function AdvancedTable<T extends { id: string | number }>({
               </div>
               <div className="flex items-center space-x-2">
                 <Button
-                  variant='outline'
-                  className='hidden h-8 w-8 p-0 lg:flex'
-                  onClick={() => updateTableState({page: 1})}
+                  variant="outline"
+                  className="hidden h-8 w-8 p-0 lg:flex"
+                  onClick={() => updateTableState({ page: 1 })}
                   disabled={tableState.page === 1}
                   aria-label="Go to first page"
                 >
-                  <ChevronsLeft className="h-4 w-4"/>
+                  <ChevronsLeft className="h-4 w-4" />
                 </Button>
                 <Button
-                  variant='outline'
-                  className='h-8 w-8 p-0'
-                  onClick={() => updateTableState({page: tableState.page - 1})}
+                  variant="outline"
+                  className="h-8 w-8 p-0"
+                  onClick={() => updateTableState({ page: tableState.page - 1 })}
                   disabled={tableState.page === 1}
                   aria-label="Go to previous page"
                 >
-                  <ChevronLeft className="h-4 w-4"/>
+                  <ChevronLeft className="h-4 w-4" />
                 </Button>
                 <Button
-                  variant='outline'
-                  className='h-8 w-8 p-0'
-                  onClick={() => updateTableState({page: tableState.page + 1})}
+                  variant="outline"
+                  className="h-8 w-8 p-0"
+                  onClick={() => updateTableState({ page: tableState.page + 1 })}
                   disabled={tableState.page === Math.ceil(totalItems / tableState.perPage)}
                   aria-label="Go to next page"
                 >
-                  <ChevronRight className="h-4 w-4"/>
+                  <ChevronRight className="h-4 w-4" />
                 </Button>
                 <Button
-                  variant='outline'
-                  className='hidden h-8 w-8 p-0 lg:flex'
-                  onClick={() => updateTableState({page: Math.ceil(totalItems / tableState.perPage)})}
+                  variant="outline"
+                  className="hidden h-8 w-8 p-0 lg:flex"
+                  onClick={() => updateTableState({ page: Math.ceil(totalItems / tableState.perPage) })}
                   disabled={tableState.page === Math.ceil(totalItems / tableState.perPage)}
                   aria-label="Go to last page"
                 >
-                  <ChevronsRight className="h-4 w-4"/>
+                  <ChevronsRight className="h-4 w-4" />
                 </Button>
               </div>
             </>
