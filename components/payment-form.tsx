@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { AdvancedCombobox } from '@/components/advanced-combobox'
 import { Loader2 } from 'lucide-react'
 import { useApi } from '@/hooks/use-api'
+import { ApiResponse } from '@/lib/api-client'
 
 const formSchema = z.object({
   amount: z.number().min(0.01, 'Amount must be greater than 0'),
@@ -34,24 +35,18 @@ export default function PaymentForm({ onSubmit, initialData }: PaymentFormProps)
     defaultValues: initialData,
   })
 
-  const fetchItems = async (search: string, page: number) => {
-    const response = await get<{ data: PaymentMethod[], meta: { current_page: number, last_page: number } }>('/payment-methods', {
+  const fetchItems = async (search: string, page: number): Promise<ApiResponse<PaymentMethod[]>> => {
+    return get<PaymentMethod[]>('/payment-methods', {
       search,
       page: page.toString(),
       per_page: '10',
     })
-
-    return {
-      data: response.data.data,
-      meta: response.data.meta
-    }
   }
 
-  const mapOption = (item: unknown): { value: string; label: string } => {
-    const paymentMethod = item as PaymentMethod
+  const mapOption = (item: PaymentMethod): { value: string; label: string } => {
     return {
-      value: paymentMethod.id,
-      label: paymentMethod.type,
+      value: item.id,
+      label: item.type,
     }
   }
 
