@@ -47,6 +47,14 @@ export default function PaymentForm({ onSubmit, initialData }: PaymentFormProps)
     }
   }
 
+  const mapOption = (item: unknown): { value: string; label: string } => {
+    const paymentMethod = item as PaymentMethod
+    return {
+      value: paymentMethod.id,
+      label: paymentMethod.type,
+    }
+  }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -81,10 +89,7 @@ export default function PaymentForm({ onSubmit, initialData }: PaymentFormProps)
                   onChange={field.onChange}
                   value={field.value}
                   fetchItems={fetchItems}
-                  mapOption={(item: PaymentMethod) => ({
-                    value: item.id,
-                    label: item.type,
-                  })}
+                  mapOption={mapOption}
                 />
               </FormControl>
               <FormMessage />
