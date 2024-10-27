@@ -22,6 +22,11 @@ interface PaymentFormProps {
   initialData?: Partial<FormValues>
 }
 
+interface PaymentMethod {
+  id: string
+  type: string
+}
+
 export default function PaymentForm({ onSubmit, initialData }: PaymentFormProps) {
   const { get } = useApi()
   const form = useForm<FormValues>({
@@ -30,15 +35,16 @@ export default function PaymentForm({ onSubmit, initialData }: PaymentFormProps)
   })
 
   const fetchItems = async (search: string, page: number) => {
-    // Use API data
-    return get('/payment-methods', {
+    const response = await get<{ data: PaymentMethod[], meta: { current_page: number, last_page: number } }>('/payment-methods', {
       search,
       page: page.toString(),
       per_page: '10',
     })
 
-    // Or use mock data
-    // return mockFetchItems(mockedItems, search, page, 10)
+    return {
+      data: response.data.data,
+      meta: response.data.meta
+    }
   }
 
   return (
@@ -75,7 +81,7 @@ export default function PaymentForm({ onSubmit, initialData }: PaymentFormProps)
                   onChange={field.onChange}
                   value={field.value}
                   fetchItems={fetchItems}
-                  mapOption={(item) => ({
+                  mapOption={(item: PaymentMethod) => ({
                     value: item.id,
                     label: item.type,
                   })}
