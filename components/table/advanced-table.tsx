@@ -366,12 +366,11 @@ export function AdvancedTable<T extends { id: string | number }>({
                         aria-label={`Select ${item.id}`}
                       />
                     </TableCell>
-
                     {columns.filter(col => visibleColumns.has(col.key)).map((column) => (
                       <TableCell key={column.key as string}>
                         {column.render
                           ? column.render(item)
-                          : getNestedValue(item, column.key as string)}
+                          : getNestedValue(item, column.key as string) as React.ReactNode}
                       </TableCell>
                     ))}
                     <TableCell>{itemActions(item, selectedItems)}</TableCell>
@@ -380,7 +379,6 @@ export function AdvancedTable<T extends { id: string | number }>({
               ) : (
                 <NoResultsMessage />
               )}
-
             </TableBody>
           </Table>
           <ScrollBar orientation="horizontal" />
