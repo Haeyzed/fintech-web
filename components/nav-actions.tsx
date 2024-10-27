@@ -7,7 +7,7 @@ import { useAuth } from '@/hooks/use-auth'
 import { Label } from '@/components/ui/label'
 
 export function NavActions() {
-  const { user, isLoading } = useAuth()
+  const { user } = useAuth()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isOpen, setIsOpen] = React.useState(false)
 

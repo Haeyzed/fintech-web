@@ -76,7 +76,7 @@ export function AdvancedCombobox({
         setLoading(false)
       }
     },
-    [loading, hasMore, fetchItems, mapOption, multiple, initialSelectedItems, initialSelectedItem]
+    [loading, hasMore, fetchItems, mapOption, multiple, initialSelectedItems, initialSelectedItem, handleApiError]
   )
 
   useEffect(() => {
