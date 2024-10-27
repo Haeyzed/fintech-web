@@ -28,7 +28,7 @@ interface PaymentMethod {
   type: string
 }
 
-export default function PaymentForm({ onSubmit, initialData }: PaymentFormProps) {
+export default function Component({ onSubmit, initialData }: PaymentFormProps) {
   const { get } = useApi()
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -79,7 +79,7 @@ export default function PaymentForm({ onSubmit, initialData }: PaymentFormProps)
             <FormItem>
               <FormLabel>Payment Method</FormLabel>
               <FormControl>
-                <AdvancedCombobox
+                <AdvancedCombobox<PaymentMethod>
                   placeholder="Select payment method"
                   onChange={field.onChange}
                   value={field.value}
