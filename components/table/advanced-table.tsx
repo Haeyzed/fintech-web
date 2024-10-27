@@ -380,6 +380,7 @@ export function AdvancedTable<T extends { id: string | number }>({
               ) : (
                 <NoResultsMessage/>
               )}
+
             </TableBody>
           </Table>
           <ScrollBar orientation="horizontal"/>
