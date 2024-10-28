@@ -114,10 +114,12 @@ export interface Transaction {
     reference: string;
     type: string;
     amount: string;
-    status: string;
     description: string;
     created_at: string;
+    status: string;
     updated_at: string;
+    start_balance: string;
+    end_balance: string;
     user: User;
     payment_method: PaymentMethod;
     bank_account: BankAccount;
