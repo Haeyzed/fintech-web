@@ -28,8 +28,18 @@ export default function VerifyEmail() {
 
       try {
         const decodedUrl = decodeURIComponent(url)
-        // Remove the base URL if it's duplicated
-        const cleanUrl = decodedUrl.replace(/^(https?:\/\/[^\/]+\/api\/v1)/, '')
+        // Extract the path and query parameters from the URL
+        const urlParts = decodedUrl.match(/^https?:\/\/[^\/]+(\/[^?]+)(\?.*)?$/)
+
+        if (!urlParts) {
+          throw new Error('Invalid URL format')
+        }
+
+        const [, path, query] = urlParts
+        // Remove any duplicate occurrences of '/api/v1' from the path
+        const cleanPath = path.replace(/\/api\/v1/g, '')
+        // Construct the clean URL
+        const cleanUrl = `/api/v1${cleanPath}${query || ''}`
 
         const response = await get(cleanUrl)
 
@@ -43,12 +53,12 @@ export default function VerifyEmail() {
         setIsVerified(false)
         const errorResponse = error as ErrorResponse
         toast.error('Error', {
-          description: errorResponse.message || 'An error occurred during registration.'
+          description: errorResponse.message || 'An error occurred during email verification.'
         })
       }
     }
 
-    verifyEmail().then(r => console.log(r))
+    verifyEmail()
   }, [searchParams, get])
 
   const handleGoToLogin = () => {
