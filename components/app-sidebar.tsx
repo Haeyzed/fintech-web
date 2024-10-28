@@ -1,18 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import {
-  Frame,
-  GalleryVerticalEnd,
-  LayoutDashboard,
-  LifeBuoy,
-  Map,
-  PieChart,
-  Send,
-  Settings2,
-  Store,
-  Users
-} from 'lucide-react'
+import { Frame, GalleryVerticalEnd, LifeBuoy, Map, PieChart, Send, Settings2, Store, Users } from 'lucide-react'
 
 import { NavMain } from '@/components/nav-main'
 import { NavUser } from '@/components/nav-user'
@@ -33,11 +22,11 @@ export const data = {
     }
   ],
   navMain: [
-    {
-      title: "Dashboard",
-      url: "/dashboard",
-      icon: LayoutDashboard,
-    },
+    // {
+    //   title: "Dashboard",
+    //   url: "/dashboard",
+    //   icon: LayoutDashboard,
+    // },
     {
       title: "Transactions",
       url: "/transactions",
