@@ -55,10 +55,10 @@ const columns: Column<Transaction>[] = [
     render: (item: Transaction) => item.payment_method.type
   },
   {
-    key: 'bank_account.bank_name',
+    key: 'bank_account.bank.name',
     label: 'Bank Name',
     sortable: true,
-    render: (item: Transaction) => item.bank_account.bank_name
+    render: (item: Transaction) => item.bank_account.bank.name
   },
   {
     key: 'bank_account.account_number',

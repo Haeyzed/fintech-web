@@ -232,7 +232,7 @@ export function AdvancedCombobox<T>({
             )}
           </CommandEmpty>
           <CommandGroup>
-            <ScrollArea className="h-[200px]">
+            {/*<ScrollArea className="h-[200px]">*/}
               <CommandList>
                 {items.map((item, index) => (
                   <CommandItem
@@ -250,7 +250,7 @@ export function AdvancedCombobox<T>({
                   </CommandItem>
                 ))}
               </CommandList>
-            </ScrollArea>
+            {/*</ScrollArea>*/}
           </CommandGroup>
         </Command>
       </PopoverContent>

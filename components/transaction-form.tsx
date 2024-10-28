@@ -10,6 +10,7 @@ import { Loader2 } from 'lucide-react'
 import { useApi } from '@/hooks/use-api'
 import { ApiResponse } from '@/lib/api-client'
 import { BANK_ACCOUNTS_API, PAYMENT_METHODS_API } from '@/lib/api-routes'
+import { BankAccount } from '@/types/auth'
 
 const formSchema = z.object({
   amount: z.number().min(0.01, 'Amount must be greater than 0'),
@@ -30,12 +31,6 @@ interface TransactionFormProps {
 interface PaymentMethod {
   id: string
   type: string
-}
-
-interface BankAccount {
-  id: string
-  account_number: string
-  bank_name: string
 }
 
 export default function TransactionForm({ onSubmit, initialData, type }: TransactionFormProps) {
@@ -71,7 +66,7 @@ export default function TransactionForm({ onSubmit, initialData, type }: Transac
   const mapBankAccountOption = (item: BankAccount): { value: string; label: string } => {
     return {
       value: item.id,
-      label: `${item.bank_name} - ${item.account_number}`,
+      label: `${item.bank.name} - ${item.account_number} - ${item.balance}`,
     }
   }
 

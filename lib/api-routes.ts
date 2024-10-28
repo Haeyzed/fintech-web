@@ -52,6 +52,19 @@ export const BANK_ACCOUNTS_EXPORT_API = `${BANK_ACCOUNTS_API()}/export`
 export const BANK_ACCOUNTS_IMPORT_API = `${BANK_ACCOUNTS_API()}/import`
 export const BANK_ACCOUNTS_COLUMNS_API = `${BANK_ACCOUNTS_API()}/table-columns`
 
+// Currency routes
+export const CURRENCIES_API = (sqid?: string) => sqid ? `/currencies/${sqid}` : '/currencies'
+
+// Bank routes
+export const BANKS_API = (sqid?: string) => sqid ? `/banks/${sqid}` : '/banks'
+export const BANKS_BULK_DELETE_API = `${BANKS_API()}/bulk-delete`
+export const BANKS_BULK_RESTORE_API = `${BANKS_API()}/bulk-restore`
+export const BANKS_FORCE_DELETE_API = (sqid: string) => `${BANKS_API(sqid)}/force-delete`
+export const BANKS_RESTORE_API = (sqid: string) => `${BANKS_API(sqid)}/restore`
+export const BANKS_EXPORT_API = `${BANKS_API()}/export`
+export const BANKS_IMPORT_API = `${BANKS_API()}/import`
+export const BANKS_COLUMNS_API = `${BANKS_API()}/table-columns`
+
 // Address routes
 export const OAUTH_CLIENT_API = (sqid?: string) => sqid ? `/addresses/${sqid}` : '/addresses'
 export const OAUTH_CLIENT_BULK_DELETE_API = `${OAUTH_CLIENT_API()}/bulk-delete`
