@@ -21,13 +21,13 @@ function isValidLocale(locale: string): locale is Locale {
 
 export function withI18nMiddleware(middleware: CustomMiddleware) {
     return async (
-        request: NextRequest,
-        event: NextFetchEvent,
-        response: NextResponse
+      request: NextRequest,
+      event: NextFetchEvent,
+      response: NextResponse
     ) => {
         const pathname = request.nextUrl.pathname;
         const pathnameIsMissingLocale = i18n.locales.every(
-            locale => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
+          locale => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
         );
 
         let locale = getLocale(request);
@@ -39,7 +39,7 @@ export function withI18nMiddleware(middleware: CustomMiddleware) {
             // Preserve query parameters
             redirectURL.search = request.nextUrl.search;
 
-            response = NextResponse.redirect(redirectURL.toString());
+            return NextResponse.redirect(redirectURL.toString());
         } else {
             // Extract locale from the pathname if it's present
             const pathLocale = pathname.split('/')[1];
@@ -48,9 +48,29 @@ export function withI18nMiddleware(middleware: CustomMiddleware) {
             }
         }
 
-        // Set the X-App-Language header
+        // Create a new response if one doesn't exist
+        if (!response) {
+            response = NextResponse.next();
+        }
+
+        // Set the App-Language header
         response.headers.set('App-Language', locale);
 
-        return middleware(request, event, response);
+        // Set a cookie for the locale
+        response.cookies.set('NEXT_LOCALE', locale, {
+            path: '/',
+            maxAge: 60 * 60 * 24 * 365, // 1 year
+        });
+
+        // Call the next middleware and get its response
+        const middlewareResponse = await middleware(request, event, response);
+
+        // If the middleware returned a response, use it; otherwise, use our modified response
+        const finalResponse = middlewareResponse instanceof NextResponse ? middlewareResponse : response;
+
+        // Ensure the App-Language header is set on the final response
+        finalResponse.headers.set('App-Language', locale);
+
+        return finalResponse;
     };
 }
