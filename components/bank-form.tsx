@@ -58,6 +58,7 @@ export default function BankForm({ onSubmit, initialData }: BankFormProps) {
         const paginatedItems = filteredItems.slice(startIndex, endIndex)
 
         resolve({
+          success: true,
           data: paginatedItems,
           meta: {
             current_page: page,
