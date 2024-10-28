@@ -7,11 +7,12 @@ import { toast } from 'sonner'
 import { useApi } from '@/hooks/use-api'
 import { CheckCircle2, Loader2, XCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { ErrorResponse } from '@/types/auth'
+import { useApiErrorHandler } from '@/hooks/use-api-error'
 
 export default function VerifyEmail() {
   const [isVerified, setIsVerified] = useState<boolean | null>(null)
   const router = useRouter()
+  const { handleApiError } = useApiErrorHandler()
   const searchParams = useSearchParams()
 
   const { get, isLoading } = useApi()
@@ -27,22 +28,7 @@ export default function VerifyEmail() {
       }
 
       try {
-        const decodedUrl = decodeURIComponent(url)
-        // Extract the path and query parameters from the URL
-        const urlParts = decodedUrl.match(/^https?:\/\/[^\/]+(\/[^?]+)(\?.*)?$/)
-
-        if (!urlParts) {
-          throw new Error('Invalid URL format')
-        }
-
-        const [, path, query] = urlParts
-        // Remove any duplicate occurrences of '/api/v1' from the path
-        const cleanPath = path.replace(/\/api\/v1/g, '')
-        // Construct the clean URL
-        const cleanUrl = `/api/v1${cleanPath}${query || ''}`
-
-        const response = await get(cleanUrl)
-
+        const response = await get(decodeURIComponent(url))
         if (response.success) {
           setIsVerified(true)
           toast.success('Success', { description: response.message })
@@ -51,15 +37,12 @@ export default function VerifyEmail() {
         }
       } catch (error) {
         setIsVerified(false)
-        const errorResponse = error as ErrorResponse
-        toast.error('Error', {
-          description: errorResponse.message || 'An error occurred during email verification.'
-        })
+        handleApiError(error)
       }
     }
 
-    verifyEmail()
-  }, [searchParams, get])
+    verifyEmail().then(r => console.log(r))
+  }, [searchParams, get, handleApiError])
 
   const handleGoToLogin = () => {
     router.push('/login')
