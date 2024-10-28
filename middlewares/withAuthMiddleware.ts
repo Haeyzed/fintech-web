@@ -4,7 +4,7 @@ import type { NextFetchEvent, NextRequest } from 'next/server'
 import { CustomMiddleware } from './chain'
 import { i18n, Locale } from "@/i18n.config"
 
-const protectedPaths = ['/dashboard']
+const protectedPaths = ['/dashboard','/transactions']
 const publicAuthPaths = ['/login', '/register', '/reset-password', '/forgot-password', '/verify']
 
 function getRoutesWithLocale(routes: string[], locales: Locale[]) {
