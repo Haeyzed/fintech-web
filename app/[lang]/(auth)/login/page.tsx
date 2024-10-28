@@ -59,7 +59,7 @@ export default function LoginPage() {
       }
 
       if (result?.ok) {
-        router.push('/dashboard')
+        router.push('/transactions')
       }
       toast.success('Success', {
         description: response.message || 'Login successful.'

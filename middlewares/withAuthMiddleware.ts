@@ -42,7 +42,7 @@ export function withAuthMiddleware(middleware: CustomMiddleware): CustomMiddlewa
             // User is authenticated
             if (publicAuthPathsWithLocale.includes(pathname)) {
                 // Redirect to dashboard if user tries to access login, register, etc.
-                return NextResponse.redirect(new URL('/dashboard', request.url))
+                return NextResponse.redirect(new URL('/transactions', request.url))
             }
         }
 

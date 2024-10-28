@@ -11,7 +11,7 @@ import { toast } from 'sonner'
 import { useApi } from '@/hooks/use-api'
 import { CustomAlertDialog } from '@/components/alert-dialog'
 import { ResponsiveDrawer } from '@/components/responsive-drawer'
-import PaymentForm, { FormValues } from '@/components/payment-form'
+import TransactionForm, { FormValues } from '@/components/transaction-form'
 import { Button } from '@/components/ui/button'
 import { useApiErrorHandler } from '@/hooks/use-api-error'
 
@@ -55,6 +55,24 @@ const columns: Column<Transaction>[] = [
     render: (item: Transaction) => item.payment_method.type
   },
   {
+    key: 'bank_account.bank_name',
+    label: 'Bank Name',
+    sortable: true,
+    render: (item: Transaction) => item.bank_account.bank_name
+  },
+  {
+    key: 'bank_account.account_number',
+    label: 'Account Number',
+    sortable: true,
+    render: (item: Transaction) => item.bank_account.account_number
+  },
+  {
+    key: 'bank_account.account_type',
+    label: 'Account Type',
+    sortable: true,
+    render: (item: Transaction) => item.bank_account.account_type
+  },
+  {
     key: 'created_at',
     label: 'Created At',
     sortable: true,
@@ -74,11 +92,12 @@ export default function TransactionsPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [isViewDrawerOpen, setIsViewDrawerOpen] = useState(false)
+  const [isDepositDrawerOpen, setIsDepositDrawerOpen] = useState(false)
+  const [isWithdrawDrawerOpen, setIsWithdrawDrawerOpen] = useState(false)
   const { handleApiError } = useApiErrorHandler()
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [pageTitle, setPageTitle] = useState('Transactions')
   const [isTrashed, setIsTrashed] = useState(false)
-  const [isCreateDrawerOpen, setIsCreateDrawerOpen] = useState(false)
   const [data, setData] = useState<Transaction | null>(null)
   const [alertDialog, setAlertDialog] = useState<{
     isOpen: boolean;
@@ -208,7 +227,6 @@ export default function TransactionsPage() {
     try {
       const response = await post<{ paystack: { authorization_url: string } }>('/paystack/payment/initialize', data)
       if (response.success && response.data.paystack.authorization_url) {
-        // Open the authorization URL in a new tab
         window.open(response.data.paystack.authorization_url, '_blank')
         toast.success('Success', {
           description: response.message
@@ -218,8 +236,28 @@ export default function TransactionsPage() {
           description: 'Failed to initiate transaction. Please try again.'
         })
       }
-      setIsCreateDrawerOpen(false)
-      // Refresh the transactions list
+      setIsDepositDrawerOpen(false)
+      await fetchTransactions({
+        page: 1,
+        perPage: 10,
+        search: '',
+        sortColumn: 'created_at',
+        sortDirection: 'desc',
+        isTrashed: false,
+        dateRange: { startDate: null, endDate: null }
+      })
+    } catch (error) {
+      handleApiError(error)
+    }
+  }
+
+  const handlePaystackWithdrawal = async (data: FormValues) => {
+    try {
+      const response = await post<{ message: string }>('/paystack/payment/withdraw', data)
+      toast.success('Success', {
+        description: response.message || 'Withdrawal initiated successfully.'
+      })
+      setIsWithdrawDrawerOpen(false)
       await fetchTransactions({
         page: 1,
         perPage: 10,
@@ -295,13 +333,13 @@ export default function TransactionsPage() {
           customButtons={
             <>
               <div className="flex space-x-2">
-                <Button onClick={() => setIsCreateDrawerOpen(true)}>
+                <Button onClick={() => setIsDepositDrawerOpen(true)}>
                   <DollarSign className="mr-2 h-4 w-4" />
                   Deposit
                 </Button>
               </div>
               <div className="flex space-x-2">
-                <Button onClick={() => setIsCreateDrawerOpen(true)}>
+                <Button onClick={() => setIsWithdrawDrawerOpen(true)}>
                   <DollarSign className="mr-2 h-4 w-4" />
                   Withdraw
                 </Button>
@@ -324,13 +362,22 @@ export default function TransactionsPage() {
           confirmText={alertDialog.confirmText}
         />
         <ResponsiveDrawer
-          open={isCreateDrawerOpen}
-          onOpenChange={setIsCreateDrawerOpen}
+          open={isDepositDrawerOpen}
+          onOpenChange={setIsDepositDrawerOpen}
           title="Deposit"
           description="Fill in the details to deposit."
           className="sm:max-w-[425px] bg-card"
         >
-          <PaymentForm onSubmit={handlePaystackDeposit} />
+          <TransactionForm onSubmit={handlePaystackDeposit} type="deposit" />
+        </ResponsiveDrawer>
+        <ResponsiveDrawer
+          open={isWithdrawDrawerOpen}
+          onOpenChange={setIsWithdrawDrawerOpen}
+          title="Withdraw"
+          description="Fill in the details to withdraw."
+          className="sm:max-w-[425px] bg-card"
+        >
+          <TransactionForm onSubmit={handlePaystackWithdrawal} type="withdrawal" />
         </ResponsiveDrawer>
         <ResponsiveDrawer
           open={isViewDrawerOpen}

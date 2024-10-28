@@ -11,7 +11,7 @@ import { toast } from 'sonner'
 import { useApi } from '@/hooks/use-api'
 import { CustomAlertDialog } from '@/components/alert-dialog'
 import { ResponsiveDrawer } from '@/components/responsive-drawer'
-import PaymentForm, { FormValues } from '@/components/payment-form'
+import TransactionForm, { FormValues } from '@/components/transaction-form'
 import { Button } from '@/components/ui/button'
 import { useApiErrorHandler } from '@/hooks/use-api-error'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -252,7 +252,7 @@ export default function UsersPage() {
           description="Fill in the details to create a new user."
           className="sm:max-w-[425px] bg-card"
         >
-          <PaymentForm onSubmit={handleCreate} />
+          <TransactionForm onSubmit={handleCreate} />
         </ResponsiveDrawer>
         <ResponsiveDrawer
           open={isViewDrawerOpen}

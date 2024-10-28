@@ -22,6 +22,18 @@ export interface User {
     deleted_at: string | null;
 }
 
+export interface BankAccount {
+    id: string;
+    account_number: string;
+    bank_name: string;
+    account_type: string;
+    balance: string;
+    is_primary: boolean;
+    created_at: string;
+    updated_at: string;
+    user: User
+}
+
 export interface AuthResponse {
     success: boolean;
     message: string;
@@ -59,6 +71,7 @@ export interface Transaction {
     updated_at: string;
     user: User;
     payment_method: PaymentMethod;
+    bank_account: BankAccount;
 }
 
 export interface TableState {

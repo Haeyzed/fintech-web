@@ -1,7 +1,18 @@
 'use client'
 
 import * as React from 'react'
-import { Frame, GalleryVerticalEnd, LifeBuoy, Map, PieChart, Send, Settings2, Store, Users } from 'lucide-react'
+import {
+  BanknoteIcon,
+  Frame,
+  GalleryVerticalEnd,
+  LifeBuoy,
+  Map,
+  PieChart,
+  Send,
+  Settings2,
+  Store,
+  Users
+} from 'lucide-react'
 
 import { NavMain } from '@/components/nav-main'
 import { NavUser } from '@/components/nav-user'
@@ -31,6 +42,11 @@ export const data = {
       title: "Transactions",
       url: "/transactions",
       icon: Store,
+    },
+    {
+      title: "Bank Accounts",
+      url: "/bank-accounts",
+      icon: BanknoteIcon,
     },
     {
       title: "Users",

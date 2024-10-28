@@ -25,6 +25,8 @@ export interface ApiResponse<T = unknown> {
         per_page: number;
         last_page: number;
         current_page: number;
+        from: number;
+        to: number;
         total: number;
     };
     errors?: Record<string, string[]>;

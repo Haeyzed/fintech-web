@@ -30,7 +30,7 @@ export const USERS_IMPORT_API = `${USERS_API()}/import`
 export const USERS_COLUMNS_API = `${USERS_API()}/table-columns`
 
 // Transaction routes
-export const TRANSACTIONS_API = (sqid?: string) => sqid ? `/transactions/${sqid}` : '/user/transactions'
+export const TRANSACTIONS_API = (sqid?: string) => sqid ? `/transactions/${sqid}` : '/transactions'
 export const TRANSACTIONS_BULK_DELETE_API = `${TRANSACTIONS_API()}/bulk-delete`
 export const TRANSACTIONS_BULK_RESTORE_API = `${TRANSACTIONS_API()}/bulk-restore`
 export const TRANSACTIONS_FORCE_DELETE_API = (sqid: string) => `${TRANSACTIONS_API(sqid)}/force-delete`
@@ -38,6 +38,19 @@ export const TRANSACTIONS_RESTORE_API = (sqid: string) => `${TRANSACTIONS_API(sq
 export const TRANSACTIONS_EXPORT_API = `${TRANSACTIONS_API()}/export`
 export const TRANSACTIONS_IMPORT_API = `${TRANSACTIONS_API()}/import`
 export const TRANSACTIONS_COLUMNS_API = `${TRANSACTIONS_API()}/table-columns`
+
+// Payment Method routes
+export const PAYMENT_METHODS_API = (sqid?: string) => sqid ? `/payment-methods/${sqid}` : '/payment-methods'
+
+// Bank Account routes
+export const BANK_ACCOUNTS_API = (sqid?: string) => sqid ? `/bank-accounts/${sqid}` : '/bank-accounts'
+export const BANK_ACCOUNTS_BULK_DELETE_API = `${BANK_ACCOUNTS_API()}/bulk-delete`
+export const BANK_ACCOUNTS_BULK_RESTORE_API = `${BANK_ACCOUNTS_API()}/bulk-restore`
+export const BANK_ACCOUNTS_FORCE_DELETE_API = (sqid: string) => `${BANK_ACCOUNTS_API(sqid)}/force-delete`
+export const BANK_ACCOUNTS_RESTORE_API = (sqid: string) => `${BANK_ACCOUNTS_API(sqid)}/restore`
+export const BANK_ACCOUNTS_EXPORT_API = `${BANK_ACCOUNTS_API()}/export`
+export const BANK_ACCOUNTS_IMPORT_API = `${BANK_ACCOUNTS_API()}/import`
+export const BANK_ACCOUNTS_COLUMNS_API = `${BANK_ACCOUNTS_API()}/table-columns`
 
 // Address routes
 export const OAUTH_CLIENT_API = (sqid?: string) => sqid ? `/addresses/${sqid}` : '/addresses'

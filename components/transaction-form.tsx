@@ -9,18 +9,22 @@ import { AdvancedCombobox } from '@/components/advanced-combobox'
 import { Loader2 } from 'lucide-react'
 import { useApi } from '@/hooks/use-api'
 import { ApiResponse } from '@/lib/api-client'
+import { BANK_ACCOUNTS_API, PAYMENT_METHODS_API } from '@/lib/api-routes'
 
 const formSchema = z.object({
   amount: z.number().min(0.01, 'Amount must be greater than 0'),
   payment_method_id: z.string().nonempty('Payment method is required'),
+  bank_account_id: z.string().nonempty('Bank account is required'),
   description: z.string().optional(),
+  reference: z.string().optional(),
 })
 
 export type FormValues = z.infer<typeof formSchema>
 
-interface PaymentFormProps {
+interface TransactionFormProps {
   onSubmit: (data: FormValues) => Promise<void>
   initialData?: Partial<FormValues>
+  type: 'deposit' | 'withdrawal'
 }
 
 interface PaymentMethod {
@@ -28,25 +32,46 @@ interface PaymentMethod {
   type: string
 }
 
-export default function PaymentForm({ onSubmit, initialData }: PaymentFormProps) {
+interface BankAccount {
+  id: string
+  account_number: string
+  bank_name: string
+}
+
+export default function TransactionForm({ onSubmit, initialData, type }: TransactionFormProps) {
   const { get } = useApi()
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData,
   })
 
-  const fetchItems = async (search: string, page: number): Promise<ApiResponse<PaymentMethod[]>> => {
-    return get<PaymentMethod[]>('/payment-methods', {
+  const fetchPaymentMethods = async (search: string, page: number): Promise<ApiResponse<PaymentMethod[]>> => {
+    return get<PaymentMethod[]>(PAYMENT_METHODS_API(), {
       search,
       page: page.toString(),
       per_page: '10',
     })
   }
 
-  const mapOption = (item: PaymentMethod): { value: string; label: string } => {
+  const fetchBankAccounts = async (search: string, page: number): Promise<ApiResponse<BankAccount[]>> => {
+    return get<BankAccount[]>(BANK_ACCOUNTS_API(), {
+      search,
+      page: page.toString(),
+      per_page: '10',
+    })
+  }
+
+  const mapPaymentMethodOption = (item: PaymentMethod): { value: string; label: string } => {
     return {
       value: item.id,
       label: item.type,
+    }
+  }
+
+  const mapBankAccountOption = (item: BankAccount): { value: string; label: string } => {
+    return {
+      value: item.id,
+      label: `${item.bank_name} - ${item.account_number}`,
     }
   }
 
@@ -83,8 +108,28 @@ export default function PaymentForm({ onSubmit, initialData }: PaymentFormProps)
                   placeholder="Select payment method"
                   onChange={field.onChange}
                   value={field.value}
-                  fetchItems={fetchItems}
-                  mapOption={mapOption}
+                  fetchItems={fetchPaymentMethods}
+                  mapOption={mapPaymentMethodOption}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="bank_account_id"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Bank Account</FormLabel>
+              <FormControl>
+                <AdvancedCombobox<BankAccount>
+                  placeholder="Select bank account"
+                  onChange={field.onChange}
+                  value={field.value}
+                  fetchItems={fetchBankAccounts}
+                  mapOption={mapBankAccountOption}
                 />
               </FormControl>
               <FormMessage />
@@ -106,6 +151,22 @@ export default function PaymentForm({ onSubmit, initialData }: PaymentFormProps)
           )}
         />
 
+        {type === 'withdrawal' && (
+          <FormField
+            control={form.control}
+            name="reference"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Reference Code</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
         <Button
           type="submit"
           className="w-full"
@@ -117,7 +178,7 @@ export default function PaymentForm({ onSubmit, initialData }: PaymentFormProps)
               Submitting...
             </>
           ) : (
-            'Deposit'
+            type === 'deposit' ? 'Deposit' : 'Withdraw'
           )}
         </Button>
       </form>
