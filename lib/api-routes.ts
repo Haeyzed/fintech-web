@@ -30,7 +30,7 @@ export const USERS_IMPORT_API = `${USERS_API()}/import`
 export const USERS_COLUMNS_API = `${USERS_API()}/table-columns`
 
 // Transaction routes
-export const TRANSACTIONS_API = (sqid?: string) => sqid ? `/transactions/${sqid}` : '/transactions'
+export const TRANSACTIONS_API = (sqid?: string) => sqid ? `/transactions/${sqid}` : '/user/transactions'
 export const TRANSACTIONS_BULK_DELETE_API = `${TRANSACTIONS_API()}/bulk-delete`
 export const TRANSACTIONS_BULK_RESTORE_API = `${TRANSACTIONS_API()}/bulk-restore`
 export const TRANSACTIONS_FORCE_DELETE_API = (sqid: string) => `${TRANSACTIONS_API(sqid)}/force-delete`

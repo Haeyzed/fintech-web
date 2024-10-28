@@ -29,7 +29,7 @@ export default function VerifyEmail() {
       }
 
       try {
-        // Decode the URL and remove the API_BASE_URL
+        // Decode the URL and remove the API_BASE_URL since we have it in our api-client
         const decodedUrl = decodeURIComponent(url)
         const endpoint = decodedUrl.replace(API_BASE_URL, '')
 
