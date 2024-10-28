@@ -8,49 +8,42 @@ import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useDebounce } from '@/hooks/use-debounce'
 import { useApiErrorHandler } from '@/hooks/use-api-error'
+import { ApiResponse } from '@/lib/api-client'
 
 interface Item {
   value: string
   label: string
 }
 
-interface FetchItemsResponse {
-  data: unknown[]
-  meta: {
-    current_page: number
-    last_page: number
-  }
-}
-
-interface AdvancedComboboxProps {
+interface AdvancedComboboxProps<T> {
   placeholder: string
   multiple?: boolean
   onChange: (value: string | string[]) => void
   value: string | string[]
-  mapOption: (item: unknown) => Item
+  mapOption: (item: T) => Item
   className?: string
   initialSelectedItem?: Item
   initialSelectedItems?: Item[]
   disabled?: boolean
   error?: string
-  fetchItems: (search: string, page: number) => Promise<FetchItemsResponse>
+  fetchItems: (search: string, page: number) => Promise<ApiResponse<T[]>>
   debounceTime?: number
 }
 
-export function AdvancedCombobox({
-                                   placeholder,
-                                   multiple = false,
-                                   onChange,
-                                   value,
-                                   mapOption,
-                                   className,
-                                   initialSelectedItem,
-                                   initialSelectedItems = [],
-                                   disabled = false,
-                                   error,
-                                   fetchItems,
-                                   debounceTime = 300,
-                                 }: AdvancedComboboxProps) {
+export function AdvancedCombobox<T>({
+                                      placeholder,
+                                      multiple = false,
+                                      onChange,
+                                      value,
+                                      mapOption,
+                                      className,
+                                      initialSelectedItem,
+                                      initialSelectedItems = [],
+                                      disabled = false,
+                                      error,
+                                      fetchItems,
+                                      debounceTime = 300,
+                                    }: AdvancedComboboxProps<T>) {
   const [open, setOpen] = useState(false)
   const [items, setItems] = useState<Item[]>(multiple ? initialSelectedItems : (initialSelectedItem ? [initialSelectedItem] : []))
   const [loading, setLoading] = useState(false)

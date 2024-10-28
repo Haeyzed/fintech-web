@@ -28,7 +28,7 @@ interface PaymentMethod {
   type: string
 }
 
-export default function Component({ onSubmit, initialData }: PaymentFormProps) {
+export default function PaymentForm({ onSubmit, initialData }: PaymentFormProps) {
   const { get } = useApi()
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
