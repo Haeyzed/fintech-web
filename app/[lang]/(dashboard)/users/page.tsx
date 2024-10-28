@@ -11,7 +11,7 @@ import { toast } from 'sonner'
 import { useApi } from '@/hooks/use-api'
 import { CustomAlertDialog } from '@/components/alert-dialog'
 import { ResponsiveDrawer } from '@/components/responsive-drawer'
-import TransactionForm, { FormValues } from '@/components/transaction-form'
+import { FormValues } from '@/components/transaction-form'
 import { Button } from '@/components/ui/button'
 import { useApiErrorHandler } from '@/hooks/use-api-error'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -61,6 +61,7 @@ export default function UsersPage() {
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [pageTitle, setPageTitle] = useState('Users')
   const [isTrashed, setIsTrashed] = useState(false)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isCreateDrawerOpen, setIsCreateDrawerOpen] = useState(false)
   const [data, setData] = useState<User | null>(null)
   const [alertDialog, setAlertDialog] = useState<{
@@ -138,12 +139,11 @@ export default function UsersPage() {
     [del, handleApiError]
   )
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleCreate = async (data: FormValues) => {
     try {
-      const response = await post<{ paystack: { authorization_url: string } }>('/paystack/payment/initialize', data)
-      if (response.success && response.data.paystack.authorization_url) {
-        // Open the authorization URL in a new tab
-        window.open(response.data.paystack.authorization_url, '_blank')
+      const response = await post<User>(USERS_API(), data)
+      if (response.success) {
         toast.success('Success', {
           description: response.message
         })
@@ -245,15 +245,15 @@ export default function UsersPage() {
           onConfirm={alertDialog.onConfirm}
           confirmText={alertDialog.confirmText}
         />
-        <ResponsiveDrawer
-          open={isCreateDrawerOpen}
-          onOpenChange={setIsCreateDrawerOpen}
-          title="Create User"
-          description="Fill in the details to create a new user."
-          className="sm:max-w-[425px] bg-card"
-        >
-          <TransactionForm onSubmit={handleCreate} />
-        </ResponsiveDrawer>
+        {/*<ResponsiveDrawer*/}
+        {/*  open={isCreateDrawerOpen}*/}
+        {/*  onOpenChange={setIsCreateDrawerOpen}*/}
+        {/*  title="Create User"*/}
+        {/*  description="Fill in the details to create a new user."*/}
+        {/*  className="sm:max-w-[425px] bg-card"*/}
+        {/*>*/}
+          {/*<TransactionForm onSubmit={handleCreate} />*/}
+        {/*</ResponsiveDrawer>*/}
         <ResponsiveDrawer
           open={isViewDrawerOpen}
           onOpenChange={setIsViewDrawerOpen}

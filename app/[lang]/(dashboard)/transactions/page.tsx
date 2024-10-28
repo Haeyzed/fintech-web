@@ -253,7 +253,7 @@ export default function TransactionsPage() {
 
   const handlePaystackWithdrawal = async (data: FormValues) => {
     try {
-      const response = await post<{ message: string }>('/paystack/payment/withdraw', data)
+      const response = await post<{ message: string }>('/paystack/withdrawal/initialize', data)
       toast.success('Success', {
         description: response.message || 'Withdrawal initiated successfully.'
       })
