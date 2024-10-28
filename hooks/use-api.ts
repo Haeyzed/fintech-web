@@ -6,7 +6,7 @@ import { ErrorResponse } from '@/types/auth';
 type ApiMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 interface ApiHook {
-    data: ApiResponse | null; // Replaces any with unknown for flexibility
+    data: ApiResponse | null;
     error: ErrorResponse | null;
     isLoading: boolean;
     get: <TResponse>(endpoint: string, params?: Record<string, string>) => Promise<ApiResponse<TResponse>>;

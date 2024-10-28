@@ -8,6 +8,7 @@ import { useApi } from '@/hooks/use-api'
 import { CheckCircle2, Loader2, XCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useApiErrorHandler } from '@/hooks/use-api-error'
+import { API_BASE_URL } from '@/lib/api-client'
 
 export default function VerifyEmail() {
   const [isVerified, setIsVerified] = useState<boolean | null>(null)
@@ -28,7 +29,11 @@ export default function VerifyEmail() {
       }
 
       try {
-        const response = await get(decodeURIComponent(url))
+        // Decode the URL and remove the API_BASE_URL
+        const decodedUrl = decodeURIComponent(url)
+        const endpoint = decodedUrl.replace(API_BASE_URL, '')
+
+        const response = await get(endpoint)
         if (response.success) {
           setIsVerified(true)
           toast.success('Success', { description: response.message })
@@ -41,7 +46,7 @@ export default function VerifyEmail() {
       }
     }
 
-    verifyEmail().then(r => console.log(r))
+    verifyEmail()
   }, [searchParams, get, handleApiError])
 
   const handleGoToLogin = () => {
