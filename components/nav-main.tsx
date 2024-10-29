@@ -32,15 +32,16 @@ export function NavMain({
   items: NavItem[]
 }) {
   const pathname = usePathname()
-  // const { isMobile } = useSidebar()
 
   const isActive = (url: string) => {
+    if (!pathname) return false
     const localePrefix = `/${pathname.split('/')[1]}`
     const localizedUrl = `${localePrefix}${url}`
     return pathname.startsWith(localizedUrl)
   }
 
   const getLocalizedUrl = (url: string) => {
+    if (!pathname) return url
     const locale = pathname.split('/')[1]
     return `/${locale}${url}`
   }
@@ -50,56 +51,56 @@ export function NavMain({
 
     if (item.items) {
       return (
-          <Collapsible
-              key={item.title}
-              asChild
-              defaultOpen={isItemActive}
-              className="group/collapsible"
-          >
-            <SidebarMenuItem>
-              <CollapsibleTrigger asChild>
-                <SidebarMenuButton tooltip={item.title} isActive={isItemActive}>
-                  {item.icon && <item.icon />}
-                  <span>{item.title}</span>
-                  <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                </SidebarMenuButton>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <SidebarMenuSub>
-                  {item.items.map((subItem) => (
-                      <SidebarMenuSubItem key={subItem.title}>
-                        <SidebarMenuSubButton asChild isActive={isActive(subItem.url)}>
-                          <Link href={getLocalizedUrl(subItem.url)}>
-                            <span>{subItem.title}</span>
-                          </Link>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                  ))}
-                </SidebarMenuSub>
-              </CollapsibleContent>
-            </SidebarMenuItem>
-          </Collapsible>
+        <Collapsible
+          key={item.title}
+          asChild
+          defaultOpen={isItemActive}
+          className="group/collapsible"
+        >
+          <SidebarMenuItem>
+            <CollapsibleTrigger asChild>
+              <SidebarMenuButton tooltip={item.title} isActive={isItemActive}>
+                {item.icon && <item.icon />}
+                <span>{item.title}</span>
+                <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+              </SidebarMenuButton>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <SidebarMenuSub>
+                {item.items.map((subItem) => (
+                  <SidebarMenuSubItem key={subItem.title}>
+                    <SidebarMenuSubButton asChild isActive={isActive(subItem.url)}>
+                      <Link href={getLocalizedUrl(subItem.url)}>
+                        <span>{subItem.title}</span>
+                      </Link>
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+                ))}
+              </SidebarMenuSub>
+            </CollapsibleContent>
+          </SidebarMenuItem>
+        </Collapsible>
       )
     } else {
       return (
-          <SidebarMenuItem key={item.title}>
-            <SidebarMenuButton asChild isActive={isActive(item.url)}>
-              <Link href={getLocalizedUrl(item.url)}>
-                {item.icon && <item.icon />}
-                <span>{item.title}</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
+        <SidebarMenuItem key={item.title}>
+          <SidebarMenuButton asChild isActive={isActive(item.url)}>
+            <Link href={getLocalizedUrl(item.url)}>
+              {item.icon && <item.icon />}
+              <span>{item.title}</span>
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
       )
     }
   }
 
   return (
-      <SidebarGroup>
-        <SidebarGroupLabel>App</SidebarGroupLabel>
-        <SidebarMenu>
-          {items.map(renderMenuItem)}
-        </SidebarMenu>
-      </SidebarGroup>
+    <SidebarGroup>
+      <SidebarGroupLabel>App</SidebarGroupLabel>
+      <SidebarMenu>
+        {items.map(renderMenuItem)}
+      </SidebarMenu>
+    </SidebarGroup>
   )
 }
