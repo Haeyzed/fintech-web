@@ -36,7 +36,7 @@ const routeMap = generateRouteMap(sidebarData.navMain)
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname()
-    const pathSegments = pathname.split('/').filter(segment => segment !== '')
+    const pathSegments = pathname.split('/').filter(segment => segment !== '') ?? null
 
     // Remove the locale from the path segments if present
     const locale = i18n.locales.find(loc => loc === pathSegments[0]) as Locale | undefined
