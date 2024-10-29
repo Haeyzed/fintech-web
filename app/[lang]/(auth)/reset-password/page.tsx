@@ -14,7 +14,6 @@ import { Loader2 } from 'lucide-react'
 import { useDictionary } from '@/app/[lang]/providers'
 import { useApiErrorHandler } from '@/hooks/use-api-error'
 
-
 export default function ResetPasswordPage() {
   const router = useRouter()
   const { resetPassword, formValidation } = useDictionary()
@@ -22,8 +21,8 @@ export default function ResetPasswordPage() {
   const { post, isLoading } = useApi()
   const searchParams = useSearchParams()
 
-  const token = searchParams.get('token')
-  const email = searchParams.get('email')
+  const token = searchParams?.get('token') ?? null
+  const email = searchParams?.get('email') ?? null
 
   const formSchema = z.object({
     password: z.string().min(8, {
