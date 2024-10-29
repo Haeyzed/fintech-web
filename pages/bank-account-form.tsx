@@ -10,7 +10,7 @@ import { Loader2 } from 'lucide-react'
 import { ApiResponse } from '@/lib/api-client'
 import { BANKS_API, CURRENCIES_API } from '@/lib/api-routes'
 import { useApi } from '@/hooks/use-api'
-import { Bank, Currency } from '@/types/auth'
+import { Bank, Currency } from '@/types'
 import { Checkbox } from '@/components/ui/checkbox'
 
 const formSchema = z.object({

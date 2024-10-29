@@ -10,7 +10,7 @@ import { Loader2 } from 'lucide-react'
 import { useApi } from '@/hooks/use-api'
 import { ApiResponse } from '@/lib/api-client'
 import { BANK_ACCOUNTS_API, PAYMENT_METHODS_API } from '@/lib/api-routes'
-import { BankAccount } from '@/types/auth'
+import { BankAccount } from '@/types'
 
 const formSchema = z.object({
   amount: z.number().min(0.01, 'Amount must be greater than 0'),

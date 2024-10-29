@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import type { NextFetchEvent, NextRequest } from 'next/server'
 import { CustomMiddleware } from './chain'
 import { API_BASE_URL } from "@/lib/api-client"
-import { AuthResponse } from "@/types/auth"
+import { AuthResponse } from "@/types"
 
 const REFRESH_TOKEN_THRESHOLD = 5 * 60 // 5 minutes in seconds
 

@@ -3,7 +3,7 @@
 import { signOut, useSession } from "next-auth/react"
 import { useRouter, usePathname } from "next/navigation"
 import { useEffect } from "react"
-import { User } from "@/types/auth"
+import { User } from "@/types"
 import { useApi } from "@/hooks/use-api"
 import { toast } from "sonner";
 

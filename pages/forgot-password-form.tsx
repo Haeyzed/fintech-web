@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { useApi } from '@/hooks/use-api'
-import { ErrorResponse } from '@/types/auth'
+import { ErrorResponse } from '@/types'
 import { useDictionary } from '@/app/[lang]/providers'
 import { Loader2 } from 'lucide-react'
 

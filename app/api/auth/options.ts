@@ -1,6 +1,6 @@
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { AuthResponse, User } from '@/types/auth'
+import { AuthResponse, User } from '@/types'
 import { API_BASE_URL } from "@/lib/api-client"
 
 declare module "next-auth" {

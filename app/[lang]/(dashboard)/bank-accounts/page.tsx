@@ -5,7 +5,7 @@ import { AdvancedTable, Column } from '@/components/table/advanced-table'
 import { ItemActions } from '@/components/table/item-actions'
 import { Badge } from '@/components/ui/badge'
 import { CreditCard, Edit, Eye, Trash2 } from 'lucide-react'
-import { BankAccount, TableState } from '@/types/auth'
+import { BankAccount, TableState } from '@/types'
 import { BANK_ACCOUNTS_API, BANK_ACCOUNTS_BULK_DELETE_API, BANK_ACCOUNTS_BULK_RESTORE_API } from '@/lib/api-routes'
 import { toast } from 'sonner'
 import { useApi } from '@/hooks/use-api'
@@ -13,7 +13,7 @@ import { CustomAlertDialog } from '@/components/alert-dialog'
 import { ResponsiveDrawer } from '@/components/responsive-drawer'
 import { Button } from '@/components/ui/button'
 import { useApiErrorHandler } from '@/hooks/use-api-error'
-import BankAccountForm, { FormValues as BankFormValues } from '@/components/bank-account-form'
+import BankAccountForm, { FormValues as BankFormValues } from '@/pages/bank-account-form'
 
 const columns: Column<BankAccount>[] = [
   { key: 'account_number', label: 'Account Number', sortable: true },

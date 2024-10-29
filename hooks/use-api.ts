@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import client, { ApiResponse } from '@/lib/api-client';
-import { ErrorResponse } from '@/types/auth';
+import { ErrorResponse } from '@/types';
 
 type ApiMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 

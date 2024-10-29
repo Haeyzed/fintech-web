@@ -1,6 +1,6 @@
 // api-client.ts
 import { getCookie } from 'cookies-next';
-import { ErrorResponse } from '@/types/auth';
+import { ErrorResponse } from '@/types';
 import Env from "@/lib/env";
 
 export const API_VERSION = 'v1';
