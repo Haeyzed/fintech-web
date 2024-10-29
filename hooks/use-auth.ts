@@ -16,10 +16,12 @@ export function useAuth() {
     const { post } = useApi()
 
     useEffect(() => {
-        if (status === "unauthenticated" && !publicAuthPaths.includes(pathname)) {
-            router.push("/login")
-        } else if (status === "authenticated" && publicAuthPaths.includes(pathname)) {
-            router.push("/dashboard")
+        if (pathname !== null) {
+            if (status === "unauthenticated" && !publicAuthPaths.includes(pathname)) {
+                router.push("/login")
+            } else if (status === "authenticated" && publicAuthPaths.includes(pathname)) {
+                router.push("/dashboard")
+            }
         }
     }, [status, router, pathname])
 
@@ -49,7 +51,7 @@ export function useAuth() {
 
     const logout = async () => {
         try {
-            const response = await post('/auth/logout',{})
+            const response = await post('/auth/logout', {})
             await signOut({ redirect: false })
             toast.success('Success', {
                 description: response.message || 'Logged out successful.',
