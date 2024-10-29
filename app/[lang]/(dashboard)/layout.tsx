@@ -36,7 +36,7 @@ const routeMap = generateRouteMap(sidebarData.navMain)
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname()
-    const pathSegments = pathname.split('/').filter(segment => segment !== '') ?? null
+    const pathSegments = pathname?.split('/').filter(segment => segment !== '') || []
 
     // Remove the locale from the path segments if present
     const locale = i18n.locales.find(loc => loc === pathSegments[0]) as Locale | undefined
@@ -49,40 +49,40 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     })
 
     return (
-        <SidebarProvider>
-            <AppSidebar />
-            <SidebarInset>
-                <header
-                    className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12"
-                >
-                    <div className="flex items-center gap-2 px-4">
-                        <SidebarTrigger className="-ml-1" />
-                        <Separator orientation="vertical" className="mr-2 h-4" />
-                        <Breadcrumb>
-                            <BreadcrumbList>
-                                {breadcrumbs.map((crumb, index) => (
-                                    <React.Fragment key={crumb.href}>
-                                        {index > 0 && <BreadcrumbSeparator />}
-                                        <BreadcrumbItem>
-                                            {index === breadcrumbs.length - 1 ? (
-                                                <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
-                                            ) : (
-                                                <BreadcrumbLink href={crumb.href}>
-                                                    {crumb.label}
-                                                </BreadcrumbLink>
-                                            )}
-                                        </BreadcrumbItem>
-                                    </React.Fragment>
-                                ))}
-                            </BreadcrumbList>
-                        </Breadcrumb>
-                    </div>
-                    <div className="ml-auto px-3">
-                        <NavActions />
-                    </div>
-                </header>
-                {children}
-            </SidebarInset>
-        </SidebarProvider>
+      <SidebarProvider>
+          <AppSidebar />
+          <SidebarInset>
+              <header
+                className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12"
+              >
+                  <div className="flex items-center gap-2 px-4">
+                      <SidebarTrigger className="-ml-1" />
+                      <Separator orientation="vertical" className="mr-2 h-4" />
+                      <Breadcrumb>
+                          <BreadcrumbList>
+                              {breadcrumbs.map((crumb, index) => (
+                                <React.Fragment key={crumb.href}>
+                                    {index > 0 && <BreadcrumbSeparator />}
+                                    <BreadcrumbItem>
+                                        {index === breadcrumbs.length - 1 ? (
+                                          <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
+                                        ) : (
+                                          <BreadcrumbLink href={crumb.href}>
+                                              {crumb.label}
+                                          </BreadcrumbLink>
+                                        )}
+                                    </BreadcrumbItem>
+                                </React.Fragment>
+                              ))}
+                          </BreadcrumbList>
+                      </Breadcrumb>
+                  </div>
+                  <div className="ml-auto px-3">
+                      <NavActions />
+                  </div>
+              </header>
+              {children}
+          </SidebarInset>
+      </SidebarProvider>
     )
 }
