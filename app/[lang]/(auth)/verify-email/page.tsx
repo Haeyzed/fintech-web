@@ -20,7 +20,7 @@ export default function VerifyEmail() {
 
   useEffect(() => {
     const verifyEmail = async () => {
-      const url = searchParams.get('url')
+      const url = searchParams?.get('url') ?? null
 
       if (!url) {
         toast.error('Error', { description: 'Invalid verification link' })
