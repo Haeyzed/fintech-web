@@ -212,31 +212,33 @@ export default function UsersPage() {
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
       <div className="min-h-[100vh] flex-1 rounded-xl md:min-h-min">
         <h1 className="text-2xl font-bold mb-4">{pageTitle}</h1>
-        <AdvancedTable<User>
-          columns={columns}
-          data={users}
-          itemActions={itemActions}
-          fallbackSortColumn="created_at"
-          fallbackSortDirection="desc"
-          onSelectionChange={setSelectedIds}
-          onFetchData={fetchUsers}
-          isLoading={isLoading}
-          totalItems={totalUsers}
-          onTrashSwitchChange={(isTrashed) => {
-            setPageTitle(isTrashed ? 'Trashed Users' : 'Users')
-            setIsTrashed(isTrashed)
-          }}
-          customButtons={
-            <>
-              {!isTrashed && selectedIds.length > 0 && (
-                <Button variant="destructive" onClick={handleBulkDelete}>Delete Selected</Button>
-              )}
-              {isTrashed && selectedIds.length > 0 && (
-                <Button onClick={handleBulkRestore}>Restore Selected</Button>
-              )}
-            </>
-          }
-        />
+        <div className="grid grid-cols-1 gap-6">
+          <AdvancedTable<User>
+            columns={columns}
+            data={users}
+            itemActions={itemActions}
+            fallbackSortColumn="created_at"
+            fallbackSortDirection="desc"
+            onSelectionChange={setSelectedIds}
+            onFetchData={fetchUsers}
+            isLoading={isLoading}
+            totalItems={totalUsers}
+            onTrashSwitchChange={(isTrashed) => {
+              setPageTitle(isTrashed ? 'Trashed Users' : 'Users')
+              setIsTrashed(isTrashed)
+            }}
+            customButtons={
+              <>
+                {!isTrashed && selectedIds.length > 0 && (
+                  <Button variant="destructive" onClick={handleBulkDelete}>Delete Selected</Button>
+                )}
+                {isTrashed && selectedIds.length > 0 && (
+                  <Button onClick={handleBulkRestore}>Restore Selected</Button>
+                )}
+              </>
+            }
+          />
+        </div>
         <CustomAlertDialog
           isOpen={alertDialog.isOpen}
           onClose={() => setAlertDialog(prev => ({ ...prev, isOpen: false }))}
@@ -252,7 +254,7 @@ export default function UsersPage() {
         {/*  description="Fill in the details to create a new user."*/}
         {/*  className="sm:max-w-[425px] bg-card"*/}
         {/*>*/}
-          {/*<TransactionForm onSubmit={handleCreate} />*/}
+        {/*<TransactionForm onSubmit={handleCreate} />*/}
         {/*</ResponsiveDrawer>*/}
         <ResponsiveDrawer
           open={isViewDrawerOpen}
