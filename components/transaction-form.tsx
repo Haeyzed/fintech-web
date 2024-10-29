@@ -17,7 +17,7 @@ const formSchema = z.object({
   payment_method_id: z.string().nonempty('Payment method is required'),
   bank_account_id: z.string().nonempty('Bank account is required'),
   description: z.string().optional(),
-  reference: z.string().optional(),
+  reference: z.string().optional()
 })
 
 export type FormValues = z.infer<typeof formSchema>
@@ -37,14 +37,14 @@ export default function TransactionForm({ onSubmit, initialData, type }: Transac
   const { get } = useApi()
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData,
+    defaultValues: initialData
   })
 
   const fetchPaymentMethods = async (search: string, page: number): Promise<ApiResponse<PaymentMethod[]>> => {
     return get<PaymentMethod[]>(PAYMENT_METHODS_API(), {
       search,
       page: page.toString(),
-      per_page: '10',
+      per_page: '10'
     })
   }
 
@@ -52,21 +52,21 @@ export default function TransactionForm({ onSubmit, initialData, type }: Transac
     return get<BankAccount[]>(BANK_ACCOUNTS_API(), {
       search,
       page: page.toString(),
-      per_page: '10',
+      per_page: '10'
     })
   }
 
   const mapPaymentMethodOption = (item: PaymentMethod): { value: string; label: string } => {
     return {
       value: item.id,
-      label: item.type,
+      label: item.type
     }
   }
 
   const mapBankAccountOption = (item: BankAccount): { value: string; label: string } => {
     return {
       value: item.id,
-      label: `${item.bank.name} - ${item.account_number} - ${item.balance}`,
+      label: `${item.bank.name} - ${item.account_number} - ${item.currency.symbol} ${parseFloat(item.balance).toFixed(2)}`,
     }
   }
 

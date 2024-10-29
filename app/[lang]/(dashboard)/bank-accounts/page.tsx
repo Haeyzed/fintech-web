@@ -4,8 +4,8 @@ import React, { useCallback, useState } from 'react'
 import { AdvancedTable, Column } from '@/components/table/advanced-table'
 import { ItemActions } from '@/components/table/item-actions'
 import { Badge } from '@/components/ui/badge'
-import { Eye, CreditCard, Trash2, Edit } from 'lucide-react'
-import { BankAccount, TableState, Transaction } from '@/types/auth'
+import { CreditCard, Edit, Eye, Trash2 } from 'lucide-react'
+import { BankAccount, TableState } from '@/types/auth'
 import { BANK_ACCOUNTS_API, BANK_ACCOUNTS_BULK_DELETE_API, BANK_ACCOUNTS_BULK_RESTORE_API } from '@/lib/api-routes'
 import { toast } from 'sonner'
 import { useApi } from '@/hooks/use-api'
@@ -42,7 +42,7 @@ const columns: Column<BankAccount>[] = [
     key: 'balance',
     label: 'Balance',
     sortable: true,
-    render: (account: BankAccount) => `$${parseFloat(account.balance).toFixed(2)}`
+    render: (account: BankAccount) => `${account.currency.symbol} ${parseFloat(account.balance).toFixed(2)}`
   },
   {
     key: 'is_primary',
@@ -329,7 +329,7 @@ export default function BankAccountPage() {
               </div>
               <div>
                 <h3 className="font-semibold">Bank Name</h3>
-                <p>{data.bank_name}</p>
+                <p>{data.bank.name}</p>
               </div>
               <div>
                 <h3 className="font-semibold">Account Type</h3>
