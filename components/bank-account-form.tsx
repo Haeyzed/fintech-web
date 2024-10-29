@@ -11,6 +11,7 @@ import { ApiResponse } from '@/lib/api-client'
 import { BANKS_API, CURRENCIES_API } from '@/lib/api-routes'
 import { useApi } from '@/hooks/use-api'
 import { Bank, Currency } from '@/types/auth'
+import { Checkbox } from '@/components/ui/checkbox'
 
 const formSchema = z.object({
   id: z.string().optional(),
@@ -199,10 +200,9 @@ export default function BankAccountForm({ onSubmit, initialData }: BankFormProps
           render={({ field }) => (
             <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
               <FormControl>
-                <input
-                  type="checkbox"
+                <Checkbox
                   checked={field.value}
-                  onChange={field.onChange}
+                  onCheckedChange={field.onChange}
                 />
               </FormControl>
               <div className="space-y-1 leading-none">
