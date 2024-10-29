@@ -1,4 +1,3 @@
-// PaystackCallback.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -24,7 +23,7 @@ export default function PaystackCallback() {
 
   useEffect(() => {
     const verifyTransaction = async () => {
-      const reference = searchParams.get('reference');
+      const reference = searchParams?.get('reference');
       if (!reference) {
         setVerificationStatus('error');
         setMessage('No reference found in the URL.');
