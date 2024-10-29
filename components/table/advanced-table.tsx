@@ -293,96 +293,99 @@ export function AdvancedTable<T extends { id: string | number }>({
           </DropdownMenu>
         )}
       </div>
-      <div className="overflow-hidden rounded-md border bg-card">
-        <ScrollArea className="h-[calc(100vh-300px)]">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[50px]">
-                  <Checkbox
-                    checked={selectedItems.length === data?.length && data?.length > 0}
-                    onCheckedChange={(checked) => handleSelectAll(checked as boolean)}
-                    aria-label="Select all"
-                  />
-                </TableHead>
-                {columns.filter(col => visibleColumns.has(col.key)).map((column) => (
-                  <TableHead key={column.key as string} className="whitespace-nowrap">
-                    {enableSort && column.sortable ? (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="-ml-3 h-8 data-[state=open]:bg-accent"
-                          >
-                            <span>{column.label}</span>
-                            {getSortIcon(column.key)}
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="start">
-                          <DropdownMenuItem onClick={() => handleSort(column.key)}>
-                            <ArrowUpIcon
-                              className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                            Asc
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleSort(column.key)}>
-                            <ArrowDownIcon
-                              className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                            Desc
-                          </DropdownMenuItem>
-                          {enableColumnVisibility && (
-                            <DropdownMenuItem
-                              onClick={() => toggleColumnVisibility(column.key)}>
-                              <EyeNoneIcon
-                                className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                              Hide
-                            </DropdownMenuItem>
-                          )}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    ) : (
-                      column.label
-                    )}
+      <div className="overflow-hidden rounded-lg border bg-card">
+        <div className="overflow-x-auto">
+          <ScrollArea>
+            {/*<ScrollArea className="h-[calc(100vh-300px)]">*/}
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[50px]">
+                    <Checkbox
+                      checked={selectedItems.length === data?.length && data?.length > 0}
+                      onCheckedChange={(checked) => handleSelectAll(checked as boolean)}
+                      aria-label="Select all"
+                    />
                   </TableHead>
-                ))}
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {isLoading ? (
-                [...Array(5)].map((_, index) => <TableSkeleton key={index} />)
-              ) : data && data.length > 0 ? (
-                data.map((item) => (
-                  <TableRow
-                    key={item.id}
-                    data-state={selectedItems.includes(item.id as string) ? 'selected' : undefined}
-                  >
-                    <TableCell>
-                      <Checkbox
-                        checked={selectedItems.includes(item.id as string)}
-                        onCheckedChange={checked =>
-                          handleSelectItem(item.id as string, checked as boolean)
-                        }
-                        aria-label={`Select ${item.id}`}
-                      />
-                    </TableCell>
-                    {columns.filter(col => visibleColumns.has(col.key)).map((column) => (
-                      <TableCell key={column.key as string}>
-                        {column.render
-                          ? column.render(item)
-                          : getNestedValue(item, column.key as string) as React.ReactNode}
+                  {columns.filter(col => visibleColumns.has(col.key)).map((column) => (
+                    <TableHead key={column.key as string} className="whitespace-nowrap">
+                      {enableSort && column.sortable ? (
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="-ml-3 h-8 data-[state=open]:bg-accent"
+                            >
+                              <span>{column.label}</span>
+                              {getSortIcon(column.key)}
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="start">
+                            <DropdownMenuItem onClick={() => handleSort(column.key)}>
+                              <ArrowUpIcon
+                                className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+                              Asc
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleSort(column.key)}>
+                              <ArrowDownIcon
+                                className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+                              Desc
+                            </DropdownMenuItem>
+                            {enableColumnVisibility && (
+                              <DropdownMenuItem
+                                onClick={() => toggleColumnVisibility(column.key)}>
+                                <EyeNoneIcon
+                                  className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+                                Hide
+                              </DropdownMenuItem>
+                            )}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      ) : (
+                        column.label
+                      )}
+                    </TableHead>
+                  ))}
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {isLoading ? (
+                  [...Array(5)].map((_, index) => <TableSkeleton key={index} />)
+                ) : data && data.length > 0 ? (
+                  data.map((item) => (
+                    <TableRow
+                      key={item.id}
+                      data-state={selectedItems.includes(item.id as string) ? 'selected' : undefined}
+                    >
+                      <TableCell>
+                        <Checkbox
+                          checked={selectedItems.includes(item.id as string)}
+                          onCheckedChange={checked =>
+                            handleSelectItem(item.id as string, checked as boolean)
+                          }
+                          aria-label={`Select ${item.id}`}
+                        />
                       </TableCell>
-                    ))}
-                    <TableCell>{itemActions(item, selectedItems)}</TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <NoResultsMessage />
-              )}
-            </TableBody>
-          </Table>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
+                      {columns.filter(col => visibleColumns.has(col.key)).map((column) => (
+                        <TableCell key={column.key as string}>
+                          {column.render
+                            ? column.render(item)
+                            : getNestedValue(item, column.key as string) as React.ReactNode}
+                        </TableCell>
+                      ))}
+                      <TableCell>{itemActions(item, selectedItems)}</TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <NoResultsMessage />
+                )}
+              </TableBody>
+            </Table>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
+        </div>
       </div>
       <div className="flex flex-col gap-2.5">
         <div
