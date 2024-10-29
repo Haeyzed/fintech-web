@@ -91,7 +91,8 @@ export default function BankAccountPage() {
     isOpen: false,
     title: '',
     description: '',
-    onConfirm: () => {},
+    onConfirm: () => {
+    },
     confirmText: ''
   })
 
@@ -274,38 +275,40 @@ export default function BankAccountPage() {
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
       <div className="min-h-[100vh] flex-1 rounded-xl md:min-h-min">
         <h1 className="text-2xl font-bold mb-4">{pageTitle}</h1>
-        <AdvancedTable<BankAccount>
-          columns={columns}
-          data={accounts}
-          itemActions={itemActions}
-          fallbackSortColumn="created_at"
-          fallbackSortDirection="desc"
-          onSelectionChange={setSelectedIds}
-          onFetchData={fetchAccounts}
-          isLoading={isLoading}
-          totalItems={totalAccounts}
-          onTrashSwitchChange={(isTrashed) => {
-            setPageTitle(isTrashed ? 'Trashed Bank Accounts' : 'Bank Accounts')
+        <div className="grid grid-cols-1 gap-6">
+          <AdvancedTable<BankAccount>
+            columns={columns}
+            data={accounts}
+            itemActions={itemActions}
+            fallbackSortColumn="created_at"
+            fallbackSortDirection="desc"
+            onSelectionChange={setSelectedIds}
+            onFetchData={fetchAccounts}
+            isLoading={isLoading}
+            totalItems={totalAccounts}
+            onTrashSwitchChange={(isTrashed) => {
+              setPageTitle(isTrashed ? 'Trashed Bank Accounts' : 'Bank Accounts')
 
-            setIsTrashed(isTrashed)
-          }}
-          customButtons={
-            <>
-              <div className="flex space-x-2">
-                <Button onClick={() => setIsAddDrawerOpen(true)}>
-                  <CreditCard className="mr-2 h-4 w-4" />
-                  Add New Account
-                </Button>
-              </div>
-              {!isTrashed && selectedIds.length > 0 && (
-                <Button variant="destructive" onClick={handleBulkDelete}>Delete Selected</Button>
-              )}
-              {isTrashed && selectedIds.length > 0 && (
-                <Button onClick={handleBulkRestore}>Restore Selected</Button>
-              )}
-            </>
-          }
-        />
+              setIsTrashed(isTrashed)
+            }}
+            customButtons={
+              <>
+                <div className="flex space-x-2">
+                  <Button onClick={() => setIsAddDrawerOpen(true)}>
+                    <CreditCard className="mr-2 h-4 w-4" />
+                    Add New Account
+                  </Button>
+                </div>
+                {!isTrashed && selectedIds.length > 0 && (
+                  <Button variant="destructive" onClick={handleBulkDelete}>Delete Selected</Button>
+                )}
+                {isTrashed && selectedIds.length > 0 && (
+                  <Button onClick={handleBulkRestore}>Restore Selected</Button>
+                )}
+              </>
+            }
+          />
+        </div>
         <CustomAlertDialog
           isOpen={alertDialog.isOpen}
           onClose={() => setAlertDialog(prev => ({ ...prev, isOpen: false }))}

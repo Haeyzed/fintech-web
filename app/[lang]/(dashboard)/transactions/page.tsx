@@ -328,6 +328,7 @@ export default function TransactionsPage() {
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
       <div className="min-h-[100vh] flex-1 rounded-xl md:min-h-min">
         <h1 className="text-2xl font-bold mb-4">{pageTitle}</h1>
+        <div className='grid grid-cols-1 gap-6'>
         <AdvancedTable<Transaction>
           columns={columns}
           data={transactions}
@@ -365,6 +366,7 @@ export default function TransactionsPage() {
             </>
           }
         />
+        </div>
         <CustomAlertDialog
           isOpen={alertDialog.isOpen}
           onClose={() => setAlertDialog(prev => ({ ...prev, isOpen: false }))}
