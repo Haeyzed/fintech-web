@@ -14,7 +14,7 @@ import { ErrorResponse } from '@/types'
 import { useDictionary } from '@/app/[lang]/providers'
 import { Loader2 } from 'lucide-react'
 
-export function ForgotPasswordPage() {
+export default function ForgotPasswordPage() {
     const { forgotPassword, formValidation } = useDictionary()
     const formSchema = z.object({
         email: z.string().email({
