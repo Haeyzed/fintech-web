@@ -31,19 +31,19 @@ const columns: Column<Transaction>[] = [
     key: 'amount',
     label: 'Amount',
     sortable: true,
-    render: (item: Transaction) => `${item.bank_account.currency.symbol} ${parseFloat(item.amount).toFixed(2)}`
+    render: (item: Transaction) => `${item.bank_account.bank.currency?.symbol} ${parseFloat(item.amount).toFixed(2)}`
   },
   {
     key: 'start_balance',
     label: 'Start Balance',
     sortable: true,
-    render: (item: Transaction) => `${item.bank_account.currency.symbol} ${parseFloat(item.start_balance).toFixed(2)}`
+    render: (item: Transaction) => `${item.bank_account.bank.currency?.symbol} ${parseFloat(item.start_balance).toFixed(2)}`
   },
   {
     key: 'end_balance',
     label: 'End Balance',
     sortable: true,
-    render: (item: Transaction) => `${item.bank_account.currency.symbol} ${parseFloat(item.end_balance).toFixed(2)}`
+    render: (item: Transaction) => `${item.bank_account.bank.currency?.symbol} ${parseFloat(item.end_balance).toFixed(2)}`
   },
   {
     key: 'status',
