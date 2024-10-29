@@ -11,7 +11,7 @@ import { toast } from 'sonner'
 import { useApi } from '@/hooks/use-api'
 import { CustomAlertDialog } from '@/components/alert-dialog'
 import { ResponsiveDrawer } from '@/components/responsive-drawer'
-import TransactionForm, { FormValues } from '@/pages/transaction-form'
+import TransactionForm, { FormValues } from '@/components/pages/transaction-form'
 import { Button } from '@/components/ui/button'
 import { useApiErrorHandler } from '@/hooks/use-api-error'
 
